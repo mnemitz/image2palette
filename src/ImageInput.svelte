@@ -4,7 +4,7 @@
         onMount,
     } from 'svelte';
     import AppColor from './util/color';
-    import { DEFAULT_IMG_SRC, getImage, drawImage, getColorGrid } from './ImageInput';
+    import { DEFAULT_IMG_SRC, getImage, getColorGrid } from './ImageInput';
 
     export let imgSrc = DEFAULT_IMG_SRC;
 
@@ -18,8 +18,9 @@
             canvas.width = img.naturalWidth;
             canvas.height = img.naturalHeight;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-            dispatch('colors', getColorGrid(canvas));
+            // TODO: Clean all this up
+            // ctx.drawImage(img, 0, 0);
+            // dispatch('colors', getColorGrid(canvas));
         }
     })();
 

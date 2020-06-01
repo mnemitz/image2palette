@@ -1,11 +1,11 @@
 import AppColor from './util/color';
 
-export function getImage(file) {        fr.onload = (e) => resolve(e.target.result);
-
+export function getImage(file) {
     return new Promise((resolve, reject) => {
         const fr = new FileReader();
         fr.onload = (e) => resolve(e.target.result);
         fr.readAsDataURL(file);
+        setTimeout(reject, 10000);
     });
 }
 

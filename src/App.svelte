@@ -1,44 +1,136 @@
 <script>
-	import { Color } from 'three';
-	import Polytope from './Polytope.svelte';
-	import ImageInput from './ImageInput.svelte';
-	import ColorList from './ColorList.svelte';
-	import SliderCheck from './SliderCheck.svelte';
-	import AppColor from './util/color';
-	import { createColorLookupMap, getDistinctColors } from './App';
-	import { Graph } from './util/graph';
+	// import { Color } from 'three';
+	// import Polytope from './Polytope.svelte';
+	// import ImageInput from './ImageInput.svelte';
+	// import ColorList from './ColorList.svelte';
+	// import AppColor from './util/color';
+	// import { createColorLookupMap, getDistinctColors } from './App';
+	// import { Graph } from './util/graph';
+	// export let colorsToImagePixel = new Map();
+	
+	// let imgSrc;
+	// let showAxes;
+	// let showMST;
+	// let vertexColorGraph = new Graph();
+
 	import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
+	import Drawer, {AppContent, Content, Header, Title as DrawerTitle, Subtitle, Scrim} from '@smui/drawer';
 	import IconButton from '@smui/icon-button';
+	import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+	import MediaQuery from './MediaQuery.svelte';
+	import Options from './Options.svelte';
+	import ImageContext from './ImageContext.svelte';
 
 	export let title = 'Colors';
 	$: {
 		document.title = title;
 	}
-	export let colorsToImagePixel = new Map();
-	let imgSrc;
-	let highlightedColor;
-	let showAxes;
-	let showMST;
-	let vertexColorGraph = new Graph();
 	
 	let prominent = false;
 	let dense = false;
 	let secondaryColor = false;
+
+	let modalDrawerOpen = false;
+
+	// state relating to image context
+	let inputImagePath = 'No image selected!';
+	let showMST = false;
+	let showAxes = true;
+
+	$: console.warn(inputImagePath);
 </script>
+<style>
+	#activity {
+		display: grid;
+		grid-template-rows: 50% 50%;
+		height: 80vh;
+	}
+	#canvas-placeholder {
+		background-color: red;
+	}
+	#colors-placeholder {
+		background-color: blue;
+	}
+	.drawer-container {
+		position: relative;
+		display: flex;
+		height: 80vh;
+		border: 1px solid rgba(0,0,0,.1);
+		overflow: hidden;
+		z-index: 0;
+	}
+	.main-content {
+		overflow: auto;
+		padding: 16px;
+		height: 100%;
+		box-sizing: border-box;
+		width: 100%;
+	}
+	* :global(.app-content) {
+		flex: auto;
+		overflow: auto;
+		position: relative;
+		flex-grow: 1;
+	}
+
+</style>
 <div id="main">
-      <TopAppBar variant="static" {prominent} {dense} color={secondaryColor ? 'secondary' : 'primary'}>
-        <Row>
-          <Section>
-            <IconButton class="material-icons">menu</IconButton>
-            <Title>Static</Title>
-          </Section>
-          <Section align="end" toolbar>
-            <IconButton class="material-icons" aria-label="Download">file_download</IconButton>
-            <IconButton class="material-icons" aria-label="Print this page">print</IconButton>
-            <IconButton class="material-icons" aria-label="Bookmark this page">bookmark</IconButton>
-          </Section>
-        </Row>
-      </TopAppBar>
+	<TopAppBar variant="static" {prominent} {dense} color={secondaryColor ? 'secondary' : 'primary'}>
+		<Row>
+			<Section>
+				<MediaQuery query="(max-width: 599px)" let:matches>
+					{#if matches}
+						<IconButton
+							id="sidemenu-toggle"
+							class="material-icons"
+							on:click={() => modalDrawerOpen = !modalDrawerOpen}
+						>
+							menu
+						</IconButton>
+					{/if}
+				</MediaQuery>
+				<Title>Convex colors</Title>
+			</Section>
+			<!-- TODO: Icons on the right: source code link etc -->
+			<!-- <Section align="end" toolbar>
+			</Section> -->
+		</Row>
+	</TopAppBar>
+	<div id="activity">
+		<div class="drawer-container">
+			<MediaQuery query="(min-width: 600px)" let:matches>
+				{#if matches}
+					<Drawer>
+						<Header>
+							<DrawerTitle>Options</DrawerTitle>
+						</Header>
+						<Options
+							on:inputImagePath={({detail: path }) => inputImagePath = path}
+						/>
+					</Drawer>
+				{:else}
+					<Drawer variant="modal" bind:open={modalDrawerOpen}>
+						<Header>
+							<DrawerTitle>Options (mobile)</DrawerTitle>
+						</Header>
+						<Options
+							on:inputImagePath={({detail: path }) => inputImagePath = path}
+						/>
+					</Drawer>
+				{/if}
+			</MediaQuery>
+			<Scrim/>
+			<AppContent>
+				<main class="main-content">
+					<ImageContext
+						inputImagePath={inputImagePath}
+						showMST={showMST}
+						showAxes={showAxes}
+					/>
+				</main>
+			</AppContent>
+		</div>
+	</div>
 </div>
 <!-- <div id="main">
 	<header>
