@@ -18,9 +18,8 @@
             canvas.width = img.naturalWidth;
             canvas.height = img.naturalHeight;
             const ctx = canvas.getContext('2d');
-            // TODO: Clean all this up
-            // ctx.drawImage(img, 0, 0);
-            // dispatch('colors', getColorGrid(canvas));
+            ctx.drawImage(img, 0, 0);
+            dispatch('colors', getColorGrid(canvas));
         }
     })();
 

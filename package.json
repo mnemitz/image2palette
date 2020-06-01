@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "serve": "serve .",
+    "start:dev": "sirv public --single --dev",
     "watch": "rollup -c rollup.config.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

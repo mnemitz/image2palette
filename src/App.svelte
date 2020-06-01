@@ -45,12 +45,6 @@
 		grid-template-rows: 50% 50%;
 		height: 80vh;
 	}
-	#canvas-placeholder {
-		background-color: red;
-	}
-	#colors-placeholder {
-		background-color: blue;
-	}
 	.drawer-container {
 		position: relative;
 		display: flex;

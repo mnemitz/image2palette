@@ -44,7 +44,7 @@
             if (colors.length < 3) return; // handle?
             scene.remove(scene.getObjectByName('polytope'));
 
-            const polytope = new ConvexColoredPolytope(colors);
+            const polytope = new ConvexColoredPolytope(Array.from(colors));
             scene.add(polytope);
 
             const graph = polytope.graph()
@@ -93,12 +93,6 @@
     })
     .catch(console.error);
 </script>
-<style>
-    canvas {
-        height: 95%!important;
-        width: 95%!important;
-    }
-</style>
 <canvas
     bind:this={canvas}
 ></canvas>

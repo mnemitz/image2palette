@@ -38,7 +38,7 @@ class ConvexColoredGeometry extends ConvexGeometry {
         for (let face of this.faces) {
             const { a, b, c } = face;
             [a,b,c].forEach((vertexIndex, i) => {
-                const { x,y,z } = this.vertices[vertexIndex];
+                const { x, y, z } = this.vertices[vertexIndex];
                 face.vertexColors[i] = new Color(`rgb(${[x,y,z]})`);
             });
         }
