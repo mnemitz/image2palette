@@ -2,41 +2,64 @@
 export let inputImagePath, showMST, showAxes;
 import Polytope from './Polytope.svelte';
 import { Color } from 'three';
+import Spinner from 'svelte-spinner';
 
-let img;
+let distinctColors = [];
 
-let colors = []; // TODO calculating the colors could be async
-
-function onImageLoad() {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    colors = getDistinctColors(canvas);
+function onImageLoad({target: img}) {
+    console.log('IMAGE LOADED: Dispatching promise');
+    distinctColors = drawInputImageToCanvas(img)
+        .then((canvas) => {
+            console.log('canvas drawn!');
+            return canvas;
+        })
+        .then(canvas => getDistinctColors(canvas))
+    console.log('PROMISE DISPATCHED');
 }
 
-function* iterColors(canvas) {
-    const { width, height } = canvas;
-    const ctx = canvas.getContext('2d');
-    const { data } = ctx.getImageData(0, 0, width, height);
-    for (let i = 0; i < data.length; i += 4) {
-        const [r,g,b,a] = [0,1,2,3].map(j => data[i+j]);
-        yield new Color(r,g,b);
-    }
+function drawInputImageToCanvas(img) {
+    return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        // setTimeout(() => resolve(canvas), 1000);
+        setTimeout(() => resolve(canvas), 1000);
+    });
+}
+
+function serialize8BitColor(r,g,b) {
+    return (r << 16) + (g << 8) + b;
+}
+
+function deserialize8BitColor(c) {
+    const [r,g,b] = [
+        (c & 0xff0000) >> 16,
+        (c & 0x00ff00) >> 8,
+        (c & 0x0000ff),
+    ];
+    return { r, g, b };
 }
 
 /**
  * 
  * @param {HTMLCanvasElement} canvas 
- * @returns {Set<THREE.Color>} A set of the canvas's color values
+ * @returns {Promise<Array<THREE.Color>>} A set of the canvas's color values
  */
 function getDistinctColors(canvas) {
-    const s = new Set();
-    for (const color of iterColors(canvas)) {
-        s.add(color);
-    }
-    return s;
+    const p = new Promise(resolve => {
+        const s = new Set();
+        const { width, height } = canvas;
+        const ctx = canvas.getContext('2d');
+        const { data } = ctx.getImageData(0, 0, width, height);
+        for (let i = 0; i < data.length; i += 4) {
+            const [r,g,b,a] = [0,1,2,3].map(j => data[i+j]);
+            s.add(serialize8BitColor(r,g,b));
+        }
+        resolve(Array.from(s, deserialize8BitColor));
+    });
+    return p;
 }
 </script>
 <style>
@@ -59,21 +82,34 @@ function getDistinctColors(canvas) {
     .image-container {
         padding: 10px;
     }
+
+    .spinner-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 <div id="outer">
     <div id="left">
         <div>
-            <Polytope
-                colors={colors}
-                showAxes={showAxes}
-                showMST={showMST}
-            />
+            {#await distinctColors}
+                <div class="spinner-container">
+                    <Spinner/>
+                </div>
+            {:then colors}
+                <Polytope
+                    colors={colors}
+                    showAxes={showAxes}
+                    showMST={showMST}
+                />
+            {/await}
         </div>
         <div class="image-container">
             <img
                 src={inputImagePath}
                 alt={null}
-                bind:this={img}
                 on:load={onImageLoad}
             />
         </div>

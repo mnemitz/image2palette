@@ -44,7 +44,7 @@
             if (colors.length < 3) return; // handle?
             scene.remove(scene.getObjectByName('polytope'));
 
-            const polytope = new ConvexColoredPolytope(Array.from(colors));
+            const polytope = new ConvexColoredPolytope(colors);
             scene.add(polytope);
 
             const graph = polytope.graph()
