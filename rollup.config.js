@@ -12,7 +12,7 @@ module.exports = {
   },
   plugins: [
     svelte({
-      emitCss: true
+      emitCss: false,
     }),
     resolve({
       browser: true,
@@ -22,6 +22,7 @@ module.exports = {
     postcss({
       extract: true,
       minimize: true,
+      extensions: ['.scss', '.sass'],
       use: [
         ['sass', {
           includePaths: [
@@ -30,7 +31,7 @@ module.exports = {
           ]
         }]
       ]
-    })
+    }),
   ],
   watch: {
     clearScreen: false

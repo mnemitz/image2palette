@@ -68,7 +68,7 @@
 	}
 
 </style>
-<div id="main">
+<div id="main" class="demo-special-theme">
 	<TopAppBar variant="static" {prominent} {dense} color={secondaryColor ? 'secondary' : 'primary'}>
 		<Row>
 			<Section>
