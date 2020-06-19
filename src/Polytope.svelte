@@ -21,7 +21,7 @@
     export let showMST = false;
     const dispatch = createEventDispatcher();
 
-    let canvas, view; // dom elements
+    let canvas, view;
 
     const scene = new Scene();
     const hide = hideSceneObject(scene);

@@ -21,8 +21,7 @@ import { Graph } from './util/graph';
 class ConvexColoredGeometry extends ConvexGeometry {
     /**
      * 
-     * @param {Array<{ r: number, g: number, b : Number }>} colors 
-     * For r,g,b values < 256
+     * @param {Array<THREE.Color>} colors 
      */
     constructor(colors) {
         const vectors = colors.map(({ r, g, b }) => new Vector3(r,g,b));
@@ -88,7 +87,7 @@ export class ColoredLineSegments extends LineSegments {
     constructor(pairs, name) {
         const vertices = [], colors = [];
 
-        for (let [src, tgt] of pairs) {
+        for (const [src, tgt] of pairs) {
             colors.push(
                 ...new Color(src).toArray(),
                 ...new Color(tgt).toArray(),

@@ -20,6 +20,8 @@
 	import MediaQuery from './MediaQuery.svelte';
 	import Options from './Options.svelte';
 	import ImageContext from './ImageContext.svelte';
+	import ThreeScene from './ThreeScene.svelte';
+	import Cube from './Cube.svelte';
 
 	export let title = 'Colors';
 	$: {
@@ -33,9 +35,12 @@
 	let modalDrawerOpen = false;
 
 	// state relating to image context
-	let inputImagePath = 'No image selected!';
+	let inputImagePath;
 	let showMST = false;
 	let showAxes = true;
+
+	// test
+	let n;
 
 	$: console.warn(inputImagePath);
 </script>
@@ -43,18 +48,18 @@
 	#activity {
 		display: grid;
 		grid-template-rows: 50% 50%;
-		height: 80vh;
+		height: 90vh;
 	}
 	.drawer-container {
 		position: relative;
 		display: flex;
-		height: 80vh;
+		height: 90vh;
 		border: 1px solid rgba(0,0,0,.1);
 		overflow: hidden;
 		z-index: 0;
 	}
 	.main-content {
-		overflow: auto;
+		overflow: none;
 		padding: 16px;
 		height: 100%;
 		box-sizing: border-box;
@@ -116,10 +121,20 @@
 			<Scrim/>
 			<AppContent>
 				<main class="main-content">
-					<ImageContext
+					<!-- <ImageContext
 						inputImagePath={inputImagePath}
 						showMST={showMST}
 						showAxes={showAxes}
+					/> -->
+					<ThreeScene>
+						<Cube id="green" color={0x00ff00} n={n}/>
+						<Cube id="red" color={0xff0000} n={20}/>
+					</ThreeScene>
+					<input
+						type="range"
+						min="1"
+						max="400"
+						on:input={(input) => n = parseInt(input.target.value)}
 					/>
 				</main>
 			</AppContent>

@@ -1,20 +1,17 @@
 <script>
 export let inputImagePath, showMST, showAxes;
-import Polytope from './Polytope.svelte';
+import ThreeScene from './ThreeScene.svelte';
+import ColorSelector from './ColorSelector.svelte';
 import { Color } from 'three';
 import Spinner from 'svelte-spinner';
+import Cube from './Cube.svelte';
 
-let distinctColors = [];
+let distinctColors;
+let graph;
 
 function onImageLoad({target: img}) {
-    console.log('IMAGE LOADED: Dispatching promise');
     distinctColors = drawInputImageToCanvas(img)
-        .then((canvas) => {
-            console.log('canvas drawn!');
-            return canvas;
-        })
         .then(canvas => getDistinctColors(canvas))
-    console.log('PROMISE DISPATCHED');
 }
 
 function drawInputImageToCanvas(img) {
@@ -24,7 +21,8 @@ function drawInputImageToCanvas(img) {
         canvas.height = img.naturalHeight;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        // setTimeout(() => resolve(canvas), 1000);
+        // Breathing room for the image to render first
+        // How to break this up to avoid this lock?
         setTimeout(() => resolve(canvas), 1000);
     });
 }
@@ -48,7 +46,7 @@ function deserialize8BitColor(c) {
  * @returns {Promise<Array<THREE.Color>>} A set of the canvas's color values
  */
 function getDistinctColors(canvas) {
-    const p = new Promise(resolve => {
+    return new Promise(resolve => {
         const s = new Set();
         const { width, height } = canvas;
         const ctx = canvas.getContext('2d');
@@ -59,7 +57,15 @@ function getDistinctColors(canvas) {
         }
         resolve(Array.from(s, deserialize8BitColor));
     });
-    return p;
+}
+
+/**
+ * 
+ * @param {Array<THREE.Color>} canvas 
+ * @returns {Promise<Graph>} A set of the canvas's color values
+ */
+function getConvexGraph() {
+    // TODO
 }
 </script>
 <style>
@@ -83,17 +89,22 @@ function getDistinctColors(canvas) {
         padding: 10px;
     }
 
-    .spinner-container {
+    /* .spinner-container {
         height: 100%;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-    }
+    } */
+    /* #color-selectors-container {
+        display: grid;
+        grid-template-columns: 20% 20% 20% 20% 20%;
+        overflow: scroll;
+    } */
 </style>
 <div id="outer">
     <div id="left">
-        <div>
+        <!-- <div class="image-container">
             {#await distinctColors}
                 <div class="spinner-container">
                     <Spinner/>
@@ -103,20 +114,25 @@ function getDistinctColors(canvas) {
                     colors={colors}
                     showAxes={showAxes}
                     showMST={showMST}
+                    on:graph={(g) => graph = g}
                 />
             {/await}
+        </div> -->
+        <div>
+            <ThreeScene>
+                <Cube/>
+            </ThreeScene>
         </div>
         <div class="image-container">
+            {#if !inputImagePath}
+                <p>No image selected!</p>
+            {:else}
             <img
                 src={inputImagePath}
                 alt={null}
                 on:load={onImageLoad}
             />
-        </div>
-    </div>
-    <div id="right">
-        <div>
-            <p>Color list will go here</p>
+            {/if}
         </div>
     </div>
         <!-- <div class="polytope-container">

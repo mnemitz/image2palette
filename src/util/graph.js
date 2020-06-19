@@ -78,12 +78,14 @@ export class Graph {
         const mst = new Graph();
         const subTrees = new UnionFind();
 
-        for (let vertex of this.vertices()) {
+        for (const vertex of this.vertices()) {
             subTrees.add(vertex);
         }
 
-        for (let { src, tgt , weight} of this.edgesByWeight()) {
-            if (subTrees.connected(src, tgt)) continue;
+        for (const { src, tgt , weight} of this.edgesByWeight()) {
+            if (subTrees.connected(src, tgt)) {
+                continue;
+            }
             mst.addEdge(src , tgt,weight);
             subTrees.union(src, tgt);
         }

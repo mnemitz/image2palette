@@ -1,17 +1,19 @@
 import { colorTo256Vector3 } from './util';
 import { Geometry, Points, PointsMaterial } from 'three';
 
-export const hideSceneObject = scene => objName => {
+export const hideSceneObject = (scene, objName) => {
     const obj = scene.getObjectByName(objName);
     if (obj) obj.visible = false;
 }
 
-export const showSceneObject = scene => objName => {
+export const showSceneObject = (scene, objName) => {
     const obj = scene.getObjectByName(objName);
     if (obj) obj.visible = true;
 }
 
-export const deleteSceneObject = scene => objName => scene.remove(scene.getObjectByName(objName));
+export const deleteSceneObject = (scene, objName) => {
+    scene.remove(scene.getObjectByName(objName));
+}
 
 export function highlightVertex({ scene, color }) {
     if (!color) return;
