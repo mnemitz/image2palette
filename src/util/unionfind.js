@@ -20,7 +20,7 @@ export class UnionFind {
         return this.roots.keys();
     }
     add(...els) {
-        [...els].forEach(el => {
+        els.forEach(el => {
             if (this.contains(el)) return;
             this.roots.set(el, el);
             this.sizes.set(el, 1);

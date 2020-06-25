@@ -6,10 +6,9 @@
     @import "@material/theme/color-palette";
   
     $mdc-theme-primary: $material-color-grey-900;
-    $mdc-theme-secondary: $material-color-grey-100;
-    $mdc-theme-background: #fff;
+    $mdc-theme-secondary: $material-color-grey-700;
     $mdc-theme-surface: #f0f0;
-    $mdc-theme-error: $material-color-orange-100;
+    // $mdc-theme-error: $material-color-orange-100;
   
     @import "@material/theme/variables";
     @each $style in map-keys($mdc-theme-property-values) {

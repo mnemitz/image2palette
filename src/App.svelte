@@ -20,8 +20,9 @@
 	import MediaQuery from './MediaQuery.svelte';
 	import Options from './Options.svelte';
 	import ImageContext from './ImageContext.svelte';
+	import { BoxGeometry } from 'three';
 	import ThreeScene from './ThreeScene.svelte';
-	import Cube from './Cube.svelte';
+	import ColoredWireFrame from './ColoredWireFrame.svelte';
 
 	export let title = 'Colors';
 	$: {
@@ -121,20 +122,8 @@
 			<Scrim/>
 			<AppContent>
 				<main class="main-content">
-					<!-- <ImageContext
+					<ImageContext
 						inputImagePath={inputImagePath}
-						showMST={showMST}
-						showAxes={showAxes}
-					/> -->
-					<ThreeScene>
-						<Cube id="green" color={0x00ff00} n={n}/>
-						<Cube id="red" color={0xff0000} n={20}/>
-					</ThreeScene>
-					<input
-						type="range"
-						min="1"
-						max="400"
-						on:input={(input) => n = parseInt(input.target.value)}
 					/>
 				</main>
 			</AppContent>

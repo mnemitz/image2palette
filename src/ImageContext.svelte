@@ -1,17 +1,28 @@
 <script>
-export let inputImagePath, showMST, showAxes;
 import ThreeScene from './ThreeScene.svelte';
 import ColorSelector from './ColorSelector.svelte';
-import { Color } from 'three';
+import { Color, Vector3 } from 'three';
 import Spinner from 'svelte-spinner';
-import Cube from './Cube.svelte';
+import ColoredWireFrame from './ColoredWireFrame.svelte';
+import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
+import { Graph } from './util/graph';
+import { serialize8BitColor, deserialize8BitColor } from './util/color';
+import Checkbox from '@smui/checkbox';
+import FormField from '@smui/form-field';
+import AxesHelper from './AxesHelper.svelte';
+
+export let inputImagePath;
+let showAxes = false;
+let showMST = false;
 
 let distinctColors;
+let convexGeometry;
 let graph;
 
 function onImageLoad({target: img}) {
-    distinctColors = drawInputImageToCanvas(img)
-        .then(canvas => getDistinctColors(canvas))
+    distinctColors = drawInputImageToCanvas(img).then(getDistinctColors);
+    convexGeometry = distinctColors.then(getConvexGeometry);
+    // graph = convexGeometry.then(getGraph)
 }
 
 function drawInputImageToCanvas(img) {
@@ -26,20 +37,6 @@ function drawInputImageToCanvas(img) {
         setTimeout(() => resolve(canvas), 1000);
     });
 }
-
-function serialize8BitColor(r,g,b) {
-    return (r << 16) + (g << 8) + b;
-}
-
-function deserialize8BitColor(c) {
-    const [r,g,b] = [
-        (c & 0xff0000) >> 16,
-        (c & 0x00ff00) >> 8,
-        (c & 0x0000ff),
-    ];
-    return { r, g, b };
-}
-
 /**
  * 
  * @param {HTMLCanvasElement} canvas 
@@ -62,10 +59,39 @@ function getDistinctColors(canvas) {
 /**
  * 
  * @param {Array<THREE.Color>} canvas 
- * @returns {Promise<Graph>} A set of the canvas's color values
+ * @returns {THREE.Geometry}
  */
-function getConvexGraph() {
-    // TODO
+function getConvexGeometry(colors) {
+    const vectors = colors.map(({ r, g, b }) => new Vector3(r,g,b));
+    return new ConvexGeometry(vectors);
+}
+
+function getGraph(geometry) {
+    const g = new Graph();
+    const { faces, vertices } = geometry;
+
+    const color = i => {
+        const {x,y,z} = vertices[i];
+        return serialize8BitColor(x,y,z);
+    };
+    const dist = (a,b) => vertices[a].distanceTo(vertices[b]);
+
+    faces.forEach(({a,b,c}) => {
+        g.addEdge(color(a), color(b), dist(a,b));
+        g.addEdge(color(b), color(c), dist(b,c));
+        g.addEdge(color(a), color(c), dist(a,c));
+    });
+    return g;
+}
+
+// TODO better name
+function threeSetupTeardown(element) {
+    console.log(element);
+    return {
+        destroy() {
+            console.log('destroyed!');
+        }
+    };
 }
 </script>
 <style>
@@ -78,6 +104,7 @@ function getConvexGraph() {
     #left {
         display: grid;
         grid-template-rows: 50% 50%;
+        height: 100%;
     }
 
     img {
@@ -88,60 +115,72 @@ function getConvexGraph() {
     .image-container {
         padding: 10px;
     }
+    #input-img {
+        max-width: 75%;
+        max-height: 75%;
+        width: auto;
+        height: auto;
+    }
 
-    /* .spinner-container {
-        height: 100%;
-        width: 100%;
+    .spinner-container {
+        position: absolute;
+        top: 20%;
+        left: 20%;
         display: flex;
         justify-content: center;
         align-items: center;
-    } */
-    /* #color-selectors-container {
-        display: grid;
-        grid-template-columns: 20% 20% 20% 20% 20%;
-        overflow: scroll;
-    } */
+        pointer-events: none;
+    }
+    .floaty {
+        padding: 5px;
+        position: absolute;
+        /* TODO: use material theme here */
+        background-color: rgba(255,255,255,0.7);
+    }
 </style>
 <div id="outer">
     <div id="left">
-        <!-- <div class="image-container">
-            {#await distinctColors}
-                <div class="spinner-container">
-                    <Spinner/>
-                </div>
-            {:then colors}
-                <Polytope
-                    colors={colors}
-                    showAxes={showAxes}
-                    showMST={showMST}
-                    on:graph={(g) => graph = g}
-                />
-            {/await}
-        </div> -->
-        <div>
+        <div class="canvas-container">
+            <div class="floaty">
+                <FormField>
+                    <Checkbox bind:checked={showAxes}/>
+                    <span slot="label">Show axes</span>
+                </FormField>
+                <FormField>
+                    <Checkbox bind:checked={showMST}/>
+                    <span slot="label">Show MST</span>
+                </FormField>
+            </div>
             <ThreeScene>
-                <Cube/>
+                {#if showAxes}
+                    <AxesHelper magnitude={512}/>
+                {/if}
+                {#await convexGeometry}
+                    <div class="spinner-container">
+                        <Spinner
+                            thickness={3}
+                            color="white"
+                            size={150}
+                        />
+                    </div>
+                {:then geometry}
+                    <ColoredWireFrame
+                        geometry={geometry}
+                    />
+                {/await}
             </ThreeScene>
         </div>
         <div class="image-container">
             {#if !inputImagePath}
                 <p>No image selected!</p>
             {:else}
-            <img
-                src={inputImagePath}
-                alt={null}
-                on:load={onImageLoad}
-            />
+                <img
+                    id="input-img"
+                    src={inputImagePath}
+                    alt={null}
+                    on:load={onImageLoad}
+                />
             {/if}
         </div>
     </div>
-        <!-- <div class="polytope-container">
-            <Polytope
-                colors={getDistinctColors(colorsToImagePixel)}
-                highlightedColor={highlightedColor}
-                showAxes={showAxes}
-                showMST={showMST}
-                on:graph={ ({ detail: graph }) => vertexColorGraph = graph }
-            />
-        </div> -->
 </div>

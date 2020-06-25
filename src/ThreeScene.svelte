@@ -17,7 +17,7 @@ onMount(() => {
 });
 
 setContext('getThreeContext', {
-    getThreeContext: () => threeContext, // or something useful
+    getThreeContext: () => threeContext,
 });
 
 class ThreeContext {
@@ -31,7 +31,6 @@ class ThreeContext {
         // Init camera
         const { x, y, z } = initialCameraPosition;
         const { width, height } = canvas;
-        console.log(width, height);
         this.camera = new PerspectiveCamera(
             15,
             width / height,
@@ -90,8 +89,10 @@ function* pan({x:x0,y:y0,z:z0}, {x:x1,y:y1,z:z1}, steps=5) {
 </script>
 <style>
     .container {
-        height: 50%;
-        width: 50%;
+        height: 100%;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
     }
 </style>
 <div bind:this={container} class="container">
