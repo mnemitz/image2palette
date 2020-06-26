@@ -1,15 +1,18 @@
 <script>
-import ThreeScene from './ThreeScene.svelte';
-import ColorSelector from './ColorSelector.svelte';
-import { Color, Vector3 } from 'three';
+// three components
+import ThreeScene from './three-components/ThreeScene.svelte';
+import ColoredWireFrame from './three-components/ColoredWireFrame.svelte';
+import AxesHelper from './three-components/AxesHelper.svelte';
+
+// DOM components
+import Checkbox from '@smui/checkbox';
+import FormField from '@smui/form-field';
 import Spinner from 'svelte-spinner';
-import ColoredWireFrame from './ColoredWireFrame.svelte';
+
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
 import { Graph } from './util/graph';
 import { serialize8BitColor, deserialize8BitColor } from './util/color';
-import Checkbox from '@smui/checkbox';
-import FormField from '@smui/form-field';
-import AxesHelper from './AxesHelper.svelte';
+import { Color, Vector3 } from 'three';
 
 export let inputImagePath;
 let showAxes = false;
@@ -82,16 +85,6 @@ function getGraph(geometry) {
         g.addEdge(color(a), color(c), dist(a,c));
     });
     return g;
-}
-
-// TODO better name
-function threeSetupTeardown(element) {
-    console.log(element);
-    return {
-        destroy() {
-            console.log('destroyed!');
-        }
-    };
 }
 </script>
 <style>
@@ -174,6 +167,7 @@ function threeSetupTeardown(element) {
             {#if !inputImagePath}
                 <p>No image selected!</p>
             {:else}
+            <!-- TODO add image info section here somewhere -->
                 <img
                     id="input-img"
                     src={inputImagePath}
