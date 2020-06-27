@@ -3,11 +3,13 @@
 import ThreeScene from './three-components/ThreeScene.svelte';
 import ColoredWireFrame from './three-components/ColoredWireFrame.svelte';
 import AxesHelper from './three-components/AxesHelper.svelte';
+import ColorPoint from './three-components/ColorPoint.svelte';
 
 // DOM components
 import Checkbox from '@smui/checkbox';
 import FormField from '@smui/form-field';
 import Spinner from 'svelte-spinner';
+import ColorCard from './ColorCard.svelte';
 
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
 import { Graph } from './util/graph';
@@ -18,14 +20,17 @@ export let inputImagePath;
 let showAxes = false;
 let showMST = false;
 
+// THERE'S A LOT OF STATE HERE
+// this should be broken up into more separate components that can dispatch events and such
 let distinctColors;
 let convexGeometry;
 let graph;
+let selectedColor;
 
 function onImageLoad({target: img}) {
     distinctColors = drawInputImageToCanvas(img).then(getDistinctColors);
     convexGeometry = distinctColors.then(getConvexGeometry);
-    // graph = convexGeometry.then(getGraph)
+    graph = convexGeometry.then(getGraph)
 }
 
 function drawInputImageToCanvas(img) {
@@ -91,13 +96,20 @@ function getGraph(geometry) {
     #outer {
         display: grid;
         grid-template-columns: 50% 50%;
+        grid-template-rows: 100%;
         background-color: darkgrey;
         height: 100%;
+        max-height: 100%;
     }
     #left {
         display: grid;
         grid-template-rows: 50% 50%;
         height: 100%;
+        max-height: 100%;
+    }
+    #right {
+        height: 100%;
+        max-height: 100%;
     }
 
     img {
@@ -124,17 +136,25 @@ function getGraph(geometry) {
         align-items: center;
         pointer-events: none;
     }
+
     .floaty {
         padding: 5px;
         position: absolute;
-        /* TODO: use material theme here */
         background-color: rgba(255,255,255,0.7);
+    }
+    #color-selector-container {
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        /* TODO get some padding within the scroller */
     }
 </style>
 <div id="outer">
     <div id="left">
         <div class="canvas-container">
-            <div class="floaty">
+            <div class="floaty mdc-typography--body2">
                 <FormField>
                     <Checkbox bind:checked={showAxes}/>
                     <span slot="label">Show axes</span>
@@ -161,6 +181,10 @@ function getGraph(geometry) {
                         geometry={geometry}
                     />
                 {/await}
+                <ColorPoint
+                    id="selected"
+                    {...selectedColor}
+                />
             </ThreeScene>
         </div>
         <div class="image-container">
@@ -175,6 +199,22 @@ function getGraph(geometry) {
                     on:load={onImageLoad}
                 />
             {/if}
+        </div>
+    </div>
+    <div id="right">
+        <div id="color-selector-container">
+            {#await graph}
+                <Spinner color="white"/>
+            {:then _graph}
+                {#if graph}
+                    {#each Array.from(_graph.vertices(), deserialize8BitColor) as {r,g,b}}
+                        <ColorCard
+                            {...{r,g,b}}
+                            on:mouseover={() => selectedColor = {r,g,b}}
+                        />
+                    {/each}
+                {/if}
+            {/await}
         </div>
     </div>
 </div>

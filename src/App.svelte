@@ -1,18 +1,4 @@
 <script>
-	// import { Color } from 'three';
-	// import Polytope from './Polytope.svelte';
-	// import ImageInput from './ImageInput.svelte';
-	// import ColorList from './ColorList.svelte';
-	// import AppColor from './util/color';
-	// import { createColorLookupMap, getDistinctColors } from './App';
-	// import { Graph } from './util/graph';
-	// export let colorsToImagePixel = new Map();
-	
-	// let imgSrc;
-	// let showAxes;
-	// let showMST;
-	// let vertexColorGraph = new Graph();
-
 	import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
 	import Drawer, {AppContent, Content, Header, Title as DrawerTitle, Subtitle, Scrim} from '@smui/drawer';
 	import IconButton from '@smui/icon-button';
@@ -20,15 +6,7 @@
 	import MediaQuery from './MediaQuery.svelte';
 	import Options from './Options.svelte';
 	import ImageContext from './ImageContext.svelte';
-	import { BoxGeometry } from 'three';
-	import ThreeScene from './ThreeScene.svelte';
-	import ColoredWireFrame from './ColoredWireFrame.svelte';
 
-	export let title = 'Colors';
-	$: {
-		document.title = title;
-	}
-	
 	let prominent = false;
 	let dense = false;
 	let secondaryColor = false;

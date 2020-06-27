@@ -7,6 +7,7 @@ export class Graph {
      * @param {THREE.Geometry} geometry 
      */
     constructor(geometry) {
+        // TODO make this more general
         this.adjList = new Map();
         if (!geometry) return;
 
