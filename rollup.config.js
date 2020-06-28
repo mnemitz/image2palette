@@ -2,6 +2,10 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
+import analyze from 'rollup-plugin-analyzer';
+
+const production = !!process.env.ROLLUP_PROD;
 
 module.exports = {
   input: 'src/index.js',
@@ -32,6 +36,8 @@ module.exports = {
         }]
       ]
     }),
+    production && terser(),
+    production && analyze(),
   ],
   watch: {
     clearScreen: false

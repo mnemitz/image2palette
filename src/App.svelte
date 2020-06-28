@@ -10,24 +10,14 @@
 	let prominent = false;
 	let dense = false;
 	let secondaryColor = false;
-
 	let modalDrawerOpen = false;
-
-	// state relating to image context
 	let inputImagePath;
-	let showMST = false;
-	let showAxes = true;
-
-	// test
-	let n;
-
-	$: console.warn(inputImagePath);
 </script>
 <style>
 	#activity {
 		display: grid;
 		grid-template-rows: 50% 50%;
-		height: 90vh;
+		height: 100vh;
 	}
 	.drawer-container {
 		position: relative;
@@ -39,7 +29,7 @@
 	}
 	.main-content {
 		overflow: none;
-		padding: 16px;
+		/* padding: 16px; */
 		height: 100%;
 		box-sizing: border-box;
 		width: 100%;

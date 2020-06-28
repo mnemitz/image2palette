@@ -10,6 +10,7 @@ import Checkbox from '@smui/checkbox';
 import FormField from '@smui/form-field';
 import Spinner from 'svelte-spinner';
 import ColorCard from './ColorCard.svelte';
+import Card, { Content } from '@smui/card';
 
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
 import { Graph } from './util/graph';
@@ -95,7 +96,7 @@ function getGraph(geometry) {
 <style>
     #outer {
         display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: 33% 67%;
         grid-template-rows: 100%;
         background-color: darkgrey;
         height: 100%;
@@ -110,6 +111,8 @@ function getGraph(geometry) {
     #right {
         height: 100%;
         max-height: 100%;
+        display: grid;
+        grid-template-rows: 60% 40%;
     }
 
     img {
@@ -149,6 +152,9 @@ function getGraph(geometry) {
         overflow-x: hidden;
         overflow-y: scroll;
         /* TODO get some padding within the scroller */
+    }
+    #color-info-container {
+        background-color: white;
     }
 </style>
 <div id="outer">
@@ -215,6 +221,13 @@ function getGraph(geometry) {
                     {/each}
                 {/if}
             {/await}
+        </div>
+        <div id="color-info-container">
+            <Card>
+                <Content>
+                    <h1>Hello!</h1>
+                </Content>
+            </Card>
         </div>
     </div>
 </div>
