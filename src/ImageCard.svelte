@@ -1,8 +1,6 @@
 <script>
-import Card, { Content, Media, MediaContent, PrimaryAction } from '@smui/card';
-
-export let src;
-
+	import Card, { Content, Media, MediaContent, PrimaryAction } from '@smui/card';
+	export let src;
 </script>
 <style>
 #card-container {

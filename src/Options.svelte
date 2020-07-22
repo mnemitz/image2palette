@@ -1,34 +1,33 @@
 <script>
-import { createEventDispatcher } from 'svelte';
-import {AppContent, Content, Header, Title as DrawerTitle, Subtitle, Scrim} from '@smui/drawer';
-import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
-import IconButton from '@smui/icon-button';
+	import { createEventDispatcher } from 'svelte';
+	import {AppContent, Content, Header, Title as DrawerTitle, Subtitle, Scrim} from '@smui/drawer';
+	import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+	import IconButton from '@smui/icon-button';
 
-const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
-function getInputFile() {
-    const input = document.createElement('input');
-    function onchange() {
-        return getImage(this.files[0])
-            .then((result) => dispatch('inputImagePath', result))
-            .catch(console.error);
-    }
+	function getInputFile() {
+			const input = document.createElement('input');
+			function onchange() {
+					return getImage(this.files[0])
+							.then((result) => dispatch('inputImagePath', result))
+							.catch(console.error);
+			}
 
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.onchange = onchange.bind(input);
-    input.click();
-}
+			input.setAttribute('type', 'file');
+			input.setAttribute('accept', 'image/*');
+			input.onchange = onchange.bind(input);
+			input.click();
+	}
 
-export function getImage(file) {
-    return new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = (e) => resolve(e.target.result);
-        fr.readAsDataURL(file);
-        setTimeout(reject, 10000);
-    });
-}
-
+	function getImage(file) {
+			return new Promise((resolve, reject) => {
+					const fr = new FileReader();
+					fr.onload = (e) => resolve(e.target.result);
+					fr.readAsDataURL(file);
+					setTimeout(reject, 10000);
+			});
+	}
 </script>
 <style>
 </style>

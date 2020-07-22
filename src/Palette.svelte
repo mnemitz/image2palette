@@ -1,7 +1,6 @@
 <script>
-import PaletteColor from './PaletteColor.svelte';
-export let colors = [];
-
+	import PaletteColor from './PaletteColor.svelte';
+	export let colors = [];
 </script>
 <style>
 .palette-container {

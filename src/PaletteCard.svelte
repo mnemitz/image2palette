@@ -1,15 +1,14 @@
 <script>
-import Paper, {Title, Subtitle, Content} from '@smui/paper';
-import IconButton from '@smui/icon-button';
-import Palette from './Palette.svelte';
-import {deserialize8BitColor} from './util/color';
+	import Paper, {Title, Subtitle, Content} from '@smui/paper';
+	import IconButton from '@smui/icon-button';
+	import Palette from './Palette.svelte';
+	import {deserialize8BitColor} from './util/color';
 
-export let colors = [];
+	export let colors = [];
 
-$: {
-    console.warn(colors);
-}
-
+	$: {
+			console.warn(colors);
+	}
 </script>
 <style>
 .container {

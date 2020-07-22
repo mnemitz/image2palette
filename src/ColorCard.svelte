@@ -1,20 +1,19 @@
 <script>
-import { createEventDispatcher, onMount } from 'svelte';
-import Card, { Content, PrimaryAction } from '@smui/card';
-import Checkbox from '@smui/checkbox';
-import FormField from '@smui/form-field';
-import { deserialize8BitColor } from './util/color';
-import { padLeft } from './util/util';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import Card, { Content, PrimaryAction } from '@smui/card';
+	import Checkbox from '@smui/checkbox';
+	import FormField from '@smui/form-field';
+	import { deserialize8BitColor } from './util/color';
+	import { padLeft } from './util/util';
 
-const dispatch = createEventDispatcher();
-export let color;
-export let selected = false;
+	const dispatch = createEventDispatcher();
+	export let color;
+	export let selected = false;
 
-const colorText = `#${padLeft(color.toString(16), 6)}`;
-// could probably acheive this without deserialization
-const {r,g,b} = deserialize8BitColor(color);
-const showLight = r <= 200 && g <= 200 && b <= 200;
-
+	const colorText = `#${padLeft(color.toString(16), 6)}`;
+	// could probably acheive this without deserialization
+	const {r,g,b} = deserialize8BitColor(color);
+	const showLight = r <= 200 && g <= 200 && b <= 200;
 </script>
 <style>
 #container {

@@ -1,4 +1,4 @@
-// This is from the svelte tutorial
+// This is from the svelte tutorial, will probably use something else in the end
 export default function pannable(node) {
 	let x;
 	let y;
