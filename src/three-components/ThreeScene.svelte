@@ -86,6 +86,11 @@ function* pan({x:x0,y:y0,z:z0}, {x:x1,y:y1,z:z1}, steps=5) {
         };
     }
 }
+
+function removeObjectById(id) {
+    const old = this.scene.getObjectById(id);
+    this.scene.remove(old);
+}
 </script>
 <style>
     .container {

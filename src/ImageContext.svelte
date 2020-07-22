@@ -8,14 +8,18 @@ import ColorPoint from './three-components/ColorPoint.svelte';
 // DOM components
 import Checkbox from '@smui/checkbox';
 import FormField from '@smui/form-field';
-import Spinner from 'svelte-spinner';
-import ColorCard from './ColorCard.svelte';
 import Card, { Content } from '@smui/card';
+import ImageCard from './ImageCard.svelte';
+import Spinner from 'svelte-spinner';
+import ColorSelector from './ColorSelector.svelte';
+import PaletteCard from './PaletteCard.svelte';
 
+import { Color, Vector3 } from 'three';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
+
+import { filterIter } from './util/util'
 import { Graph } from './util/graph';
 import { serialize8BitColor, deserialize8BitColor } from './util/color';
-import { Color, Vector3 } from 'three';
 
 export let inputImagePath;
 let showAxes = false;
@@ -23,15 +27,30 @@ let showMST = false;
 
 // THERE'S A LOT OF STATE HERE
 // this should be broken up into more separate components that can dispatch events and such
-let distinctColors;
-let convexGeometry;
-let graph;
-let selectedColor;
+let distinctColorsP;
+let convexGeometryP;
+let graphP;
 
-function onImageLoad({target: img}) {
-    distinctColors = drawInputImageToCanvas(img).then(getDistinctColors);
-    convexGeometry = distinctColors.then(getConvexGeometry);
-    graph = convexGeometry.then(getGraph)
+let hoveredColor;
+let selectedColors = [];
+
+$: {
+    if (!inputImagePath) {
+        break $;
+    }
+    // create off-document img element
+    // use it to draw to an off-document canvas,
+    // discern the distinct colors etc.
+    const img = new Image();
+    img.src = inputImagePath;
+    img && img.decode().then(() => onImageLoad(img));
+}
+
+function onImageLoad(img) {
+    selectedColors = [];
+    distinctColorsP = drawInputImageToCanvas(img).then(getDistinctColors);
+    convexGeometryP = distinctColorsP.then(getConvexGeometry);
+    graphP = convexGeometryP.then(getGraph)
 }
 
 function drawInputImageToCanvas(img) {
@@ -71,12 +90,12 @@ function getDistinctColors(canvas) {
  * @returns {THREE.Geometry}
  */
 function getConvexGeometry(colors) {
+    console.log('getting convex geom');
     const vectors = colors.map(({ r, g, b }) => new Vector3(r,g,b));
     return new ConvexGeometry(vectors);
 }
 
 function getGraph(geometry) {
-    const g = new Graph();
     const { faces, vertices } = geometry;
 
     const color = i => {
@@ -84,13 +103,25 @@ function getGraph(geometry) {
         return serialize8BitColor(x,y,z);
     };
     const dist = (a,b) => vertices[a].distanceTo(vertices[b]);
-
-    faces.forEach(({a,b,c}) => {
-        g.addEdge(color(a), color(b), dist(a,b));
-        g.addEdge(color(b), color(c), dist(b,c));
-        g.addEdge(color(a), color(c), dist(a,c));
-    });
-    return g;
+    return new Graph((function* () {
+        for (const {a,b,c} of faces) {
+            yield {
+                v: color(a),
+                w: color(b),
+                weight: dist(a,b),
+            };
+            yield {
+                v: color(b),
+                w: color(c),
+                weight: dist(b,c),
+            };
+            yield {
+                v: color(a),
+                w: color(c),
+                weight: dist(a,c),
+            };
+        }
+    })());
 }
 </script>
 <style>
@@ -98,15 +129,14 @@ function getGraph(geometry) {
         display: grid;
         grid-template-columns: 33% 67%;
         grid-template-rows: 100%;
-        background-color: darkgrey;
         height: 100%;
         max-height: 100%;
     }
     #left {
-        display: grid;
-        grid-template-rows: 50% 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         height: 100%;
-        max-height: 100%;
     }
     #right {
         height: 100%;
@@ -114,26 +144,15 @@ function getGraph(geometry) {
         display: grid;
         grid-template-rows: 60% 40%;
     }
-
-    img {
-        height: 100%;
-        width: 100%;
-    }
-
-    .image-container {
-        padding: 10px;
-    }
-    #input-img {
-        max-width: 75%;
-        max-height: 75%;
-        width: auto;
-        height: auto;
+    #canvas-container {
+        height: 40vh;
+        margin: 10px;
     }
 
     .spinner-container {
         position: absolute;
-        top: 20%;
-        left: 20%;
+        top: 10%;
+        left: 10%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -145,21 +164,13 @@ function getGraph(geometry) {
         position: absolute;
         background-color: rgba(255,255,255,0.7);
     }
-    #color-selector-container {
-        display: grid;
-        grid-template-columns: 25% 25% 25% 25%;
-        height: 100%;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        /* TODO get some padding within the scroller */
-    }
-    #color-info-container {
-        background-color: white;
+    #image-card-container {
+        margin: 10px;
     }
 </style>
 <div id="outer">
     <div id="left">
-        <div class="canvas-container">
+        <div id="canvas-container">
             <div class="floaty mdc-typography--body2">
                 <FormField>
                     <Checkbox bind:checked={showAxes}/>
@@ -174,7 +185,7 @@ function getGraph(geometry) {
                 {#if showAxes}
                     <AxesHelper magnitude={512}/>
                 {/if}
-                {#await convexGeometry}
+                {#await convexGeometryP}
                     <div class="spinner-container">
                         <Spinner
                             thickness={3}
@@ -188,8 +199,8 @@ function getGraph(geometry) {
                     />
                 {/await}
                 <ColorPoint
-                    id="selected"
-                    {...selectedColor}
+                    id="hovered"
+                    color={hoveredColor}
                 />
             </ThreeScene>
         </div>
@@ -197,37 +208,43 @@ function getGraph(geometry) {
             {#if !inputImagePath}
                 <p>No image selected!</p>
             {:else}
-            <!-- TODO add image info section here somewhere -->
-                <img
-                    id="input-img"
-                    src={inputImagePath}
-                    alt={null}
-                    on:load={onImageLoad}
-                />
+                <div id="image-card-container">
+                    <ImageCard src={inputImagePath}>
+                        <strong>Distinct colors: </strong>
+                        {#await distinctColorsP}
+                            ...
+                        {:then distinctColors}
+                            {#if distinctColors}
+                                <span>
+                                    {distinctColors.length}
+                                </span>
+                            {/if}
+                        {/await}
+                        <strong>Convex colors: </strong>
+                        {#await graphP}
+                            ...
+                        {:then graph}
+                            {#if graph}
+                                <span>
+                                    {graph.vertexCount()}
+                                </span>
+                            {/if}
+                        {/await}
+                    </ImageCard>
+                </div>
             {/if}
         </div>
     </div>
     <div id="right">
-        <div id="color-selector-container">
-            {#await graph}
-                <Spinner color="white"/>
-            {:then _graph}
-                {#if graph}
-                    {#each Array.from(_graph.vertices(), deserialize8BitColor) as {r,g,b}}
-                        <ColorCard
-                            {...{r,g,b}}
-                            on:mouseover={() => selectedColor = {r,g,b}}
-                        />
-                    {/each}
-                {/if}
-            {/await}
-        </div>
-        <div id="color-info-container">
-            <Card>
-                <Content>
-                    <h1>Hello!</h1>
-                </Content>
-            </Card>
-        </div>
+        {#await graphP}
+            <Spinner color="white"/>
+        {:then graph}
+            <ColorSelector
+                colors={graph && Array.from(graph.vertices())}
+                bind:selectedColors={selectedColors}
+                on:hovered={({detail: color}) => hoveredColor = color}
+            />
+        {/await}
+        <PaletteCard bind:colors={selectedColors}/>
     </div>
 </div>

@@ -1,19 +1,20 @@
 <script>
 import { getContext, onDestroy } from 'svelte';
 import { Color, Geometry, Points, PointsMaterial, Vector3 } from 'three';
-import { serialize8BitColor } from '../util/color';
+import { deserialize8BitColor } from '../util/color';
 
 const { getThreeContext } = getContext('getThreeContext');
 const threeContext = getThreeContext();
 
-export let r,g,b;
+export let color;
 export let id;
 const _id = `colorpoint:${id}`;
 
 $: {
-    if (!threeContext) {
+    if (!threeContext || !(0 <= color && color <= 0xffffff)) {
         break $;
     }
+    const {r,g,b} = deserialize8BitColor(color);
     const old = threeContext.scene.getObjectByName(_id);
     threeContext.scene.remove(old);
 
@@ -27,7 +28,7 @@ $: {
 
     const material = new PointsMaterial({
         size: 80.0,
-        color: new Color(serialize8BitColor(r,g,b)),  
+        color: new Color(color),  
     });
     const points = new Points(singlePointGeometry, material);
     points.name = _id;

@@ -63,33 +63,15 @@ export function groupBy(list, keyGetter) {
     return map;
 }
 
-export function vec3to256Color({x,y,z}) {
-    // avoid floating point stuff by creating a single int representation
-    return new Color((x << 16) | (y << 8) | z);
-}
-
-export function colorTo256Vector3(color) {
-    const hexInt = (typeof color === 'number') ? color : color.getHex();
-    const r = (hexInt & 0xff0000) >> 16;
-    const g = (hexInt & 0x00ff00) >> 8;
-    const b = (hexInt & 0x0000ff);
-    return new Vector3(r,g,b);
-}
-
 /**
  * 
  * @param {Iterator} itr 
  * @param {(x: string | number) => boolean} satisfies 
  */
-export function* filterIter(itr, satisfies) {
+export function* filterIter(itr, needle) {
+    const satisfies = typeof needle === 'function' ? needle : (el) => el === needle;
     for (let thing of itr) {
         if (satisfies(thing)) yield thing;
-    }
-}
-
-export function* mapItr(itr, cb) {
-    for (let e of itr) {
-        yield cb(e);
     }
 }
 

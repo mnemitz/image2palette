@@ -1,4 +1,4 @@
-import { filterIter, min, vec3to256Color, decrCompare, cloneNestedMap } from './util';
+import { filterIter, min, decrCompare, cloneNestedMap } from './util';
 import { UnionFind } from './unionfind';
 
 export class Graph {
@@ -6,21 +6,11 @@ export class Graph {
      * 
      * @param {THREE.Geometry} geometry 
      */
-    constructor(geometry) {
-        // TODO make this more general
+    constructor(iter) {
         this.adjList = new Map();
-        if (!geometry) return;
-
-        // optional geometry construction (rest is generic, could move this out)
-        const { faces, vertices: geomVertices } = geometry;
-        const color = i => vec3to256Color(geomVertices[i]).getHex();
-        
-        const dist = (a,b) => geomVertices[a].distanceTo(geomVertices[b]);
-        faces.forEach(({a,b,c}) => {
-            this.addEdge(color(a), color(b), dist(a,b));
-            this.addEdge(color(b), color(c), dist(b,c));
-            this.addEdge(color(a), color(c), dist(a,c));
-        });
+        for (const { v , w, weight } of iter) {
+            this.addEdge(v, w, weight);
+        }
     }
     addEdge(v, w, weight) {
         if (!this.adjList.get(v)) this.adjList.set(v, new Map());

@@ -14,18 +14,20 @@
 	let inputImagePath;
 </script>
 <style>
-	#activity {
-		display: grid;
-		grid-template-rows: 50% 50%;
-		height: 100vh;
+	#main {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+	#topbar-icon {
+		max-height: 100%;
 	}
 	.drawer-container {
 		position: relative;
 		display: flex;
-		height: 90vh;
+		flex-grow: 1;
 		border: 1px solid rgba(0,0,0,.1);
 		overflow: hidden;
-		z-index: 0;
 	}
 	.main-content {
 		overflow: none;
@@ -42,96 +44,60 @@
 	}
 
 </style>
-<div id="main" class="demo-special-theme">
-	<TopAppBar variant="static" {prominent} {dense} color={secondaryColor ? 'secondary' : 'primary'}>
-		<Row>
-			<Section>
-				<MediaQuery query="(max-width: 599px)" let:matches>
-					{#if matches}
-						<IconButton
-							id="sidemenu-toggle"
-							class="material-icons"
-							on:click={() => modalDrawerOpen = !modalDrawerOpen}
-						>
-							menu
-						</IconButton>
-					{/if}
-				</MediaQuery>
-				<Title>Convex colors</Title>
-			</Section>
-			<!-- TODO: Icons on the right: source code link etc -->
-			<!-- <Section align="end" toolbar>
-			</Section> -->
-		</Row>
-	</TopAppBar>
-	<div id="activity">
-		<div class="drawer-container">
-			<MediaQuery query="(min-width: 600px)" let:matches>
-				{#if matches}
-					<Drawer>
-						<Header>
-							<DrawerTitle>Options</DrawerTitle>
-						</Header>
-						<Options
-							on:inputImagePath={({detail: path }) => inputImagePath = path}
-						/>
-					</Drawer>
-				{:else}
-					<Drawer variant="modal" bind:open={modalDrawerOpen}>
-						<Header>
-							<DrawerTitle>Options (mobile)</DrawerTitle>
-						</Header>
-						<Options
-							on:inputImagePath={({detail: path }) => inputImagePath = path}
-						/>
-					</Drawer>
-				{/if}
-			</MediaQuery>
-			<Scrim/>
-			<AppContent>
-				<main class="main-content">
-					<ImageContext
-						inputImagePath={inputImagePath}
+<div id="main" class="site-default-theme">
+	<div id="top-app-bar-container">
+		<TopAppBar variant="static" {prominent} {dense} color={secondaryColor ? 'secondary' : 'primary'}>
+			<Row>
+				<Section>
+					<MediaQuery query="(max-width: 599px)" let:matches>
+						{#if matches}
+							<IconButton
+								id="sidemenu-toggle"
+								class="material-icons"
+								on:click={() => modalDrawerOpen = !modalDrawerOpen}
+							>
+								menu
+							</IconButton>
+						{/if}
+					</MediaQuery>
+					<img id="topbar-icon" src="colorpickerspace.svg" alt=":("/>
+					<Title>Pick some colors!</Title>
+				</Section>
+				<!-- TODO: Icons on the right: source code link etc -->
+				<!-- <Section align="end" toolbar>
+				</Section> -->
+			</Row>
+		</TopAppBar>
+	</div>
+	<div class="drawer-container">
+		<MediaQuery query="(min-width: 600px)" let:matches>
+			{#if matches}
+				<Drawer class="site-drawer">
+					<Header>
+						<DrawerTitle>Options</DrawerTitle>
+					</Header>
+					<Options
+						on:inputImagePath={({detail: path }) => inputImagePath = path}
 					/>
-				</main>
-			</AppContent>
-		</div>
+				</Drawer>
+			{:else}
+				<Drawer variant="modal" bind:open={modalDrawerOpen}>
+					<Header>
+						<DrawerTitle>Options (mobile)</DrawerTitle>
+					</Header>
+					<Options
+						on:inputImagePath={({detail: path }) => inputImagePath = path}
+					/>
+				</Drawer>
+			{/if}
+		</MediaQuery>
+		<Scrim/>
+		<AppContent>
+			<main class="main-content">
+				<ImageContext
+					inputImagePath={inputImagePath}
+				/>
+			</main>
+		</AppContent>
 	</div>
 </div>
-<!-- <div id="main">
-	<header>
-		<h1>Convex colors</h1>
-	</header>
-	<div id="image-container">
-		<ImageInput
-			imgSrc={imgSrc}
-			on:imgsrc={ ({ detail: _imgSrc }) => { imgSrc = _imgSrc }}
-			on:colors={
-				({ detail: newColorGrid }) => {
-					colorsToImagePixel = createColorLookupMap(newColorGrid);
-				}
-			}
-		/>
-	</div>
-	<div id="container">
-		<div id="top">
-			<div class="polytope-container">
-				<Polytope
-					colors={getDistinctColors(colorsToImagePixel)}
-					highlightedColor={highlightedColor}
-					showAxes={showAxes}
-					showMST={showMST}
-					on:graph={ ({ detail: graph }) => vertexColorGraph = graph }
-				/>
-			</div>
-		</div>
-		<div id="bottom">
-			<ColorList
-				colors={Array.from(vertexColorGraph.approxMinVertexCover()).sort()}
-				on:highlightcolor={ ({ detail: color }) =>
-					highlightedColor = color && new Color(color)
-				}
-			/>
-		</div>
-	</div>
-</div> -->
