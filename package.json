@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "serve": "serve .",
+    "serve": "serve dist",
     "watch": "rollup -c rollup.config.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,10 +19,12 @@
     "@smui/checkbox": "^1.0.0-beta.21",
     "@smui/common": "^1.0.0-beta.21",
     "@smui/data-table": "^1.0.0-beta.21",
+    "@smui/dialog": "^1.0.0-beta.21",
     "@smui/drawer": "^1.0.0-beta.21",
     "@smui/fab": "^1.0.0-beta.21",
     "@smui/form-field": "^1.0.0-beta.21",
     "@smui/icon-button": "^1.0.0-beta.21",
+    "@smui/image-list": "^1.0.0-beta.21",
     "@smui/list": "^1.0.0-beta.21",
     "@smui/paper": "^1.0.0-beta.21",
     "@smui/top-app-bar": "^1.0.0-beta.21",

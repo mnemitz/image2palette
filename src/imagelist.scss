@@ -1,0 +1,8 @@
+@import "@material/image-list/mixins";
+
+.image-list {
+	@include mdc-image-list-standard-columns(3);
+	@include mdc-image-list-aspect(4/5);
+	min-width: 500px;
+}
+

@@ -3,6 +3,7 @@
 	import {AppContent, Content, Header, Title as DrawerTitle, Subtitle, Scrim} from '@smui/drawer';
 	import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
 	import IconButton from '@smui/icon-button';
+	import ExamplesDialog from './ExamplesDialog.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -28,6 +29,8 @@
 					setTimeout(reject, 10000);
 			});
 	}
+
+	let examplesDialog;
 </script>
 <style>
 </style>
@@ -39,7 +42,7 @@
             </IconButton>
             <Text>Analyze image</Text>
         </Item>
-        <Item>
+        <Item on:click={examplesDialog.open}>
             <IconButton class="material-icons">
                 view_module
             </IconButton>
@@ -52,4 +55,8 @@
             <Text>About</Text>
         </Item>
     </List>
+		<ExamplesDialog
+			bind:this={examplesDialog}
+			on:selectedImage={({detail: filename}) => dispatch('inputImagePath', filename)}
+		/>
 </Content>

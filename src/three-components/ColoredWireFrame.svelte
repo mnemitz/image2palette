@@ -10,6 +10,11 @@ export let geometry;
 const name = `wireframe:${id}`;
 
 $: {
+		if (!threeContext || !geometry) {
+			// The fact that this is necessary is a SMELL
+			// TODO: Remove
+			break $;
+		}
     const old = threeContext.scene.getObjectByName(name);
     threeContext.scene.remove(old);
 

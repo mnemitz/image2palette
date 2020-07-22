@@ -35,15 +35,21 @@
 	let selectedColors = [];
 
 	$: {
-			if (!inputImagePath) {
-					break $;
-			}
-			// create off-document img element
-			// use it to draw to an off-document canvas,
-			// discern the distinct colors etc.
-			const img = new Image();
-			img.src = inputImagePath;
-			img && img.decode().then(() => onImageLoad(img));
+		if (!inputImagePath) {
+				break $;
+		}
+		// create off-document img element
+		// use it to draw to an off-document canvas,
+		// discern the distinct colors etc.
+		const img = new Image();
+		img.src = inputImagePath;
+		console.warn(inputImagePath);
+
+		img && img.decode()
+		.then(() => onImageLoad(img))
+		.catch((err) => {
+			console.error('error decoding image', err);
+		})
 	}
 
 	function onImageLoad(img) {
