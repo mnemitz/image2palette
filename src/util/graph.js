@@ -1,4 +1,4 @@
-import { filterIter, min, decrCompare } from './util';
+import { filterIter, decrCompare } from './util';
 import { UnionFind } from './unionfind';
 
 export class Graph {
@@ -19,7 +19,7 @@ export class Graph {
         this.adjList.get(w).set(v, weight);
 
         // set the min vertex value, for default representations
-        const minVertex = min(v,w);
+        const minVertex = Math.min(v,w);
         if (!this.minVertex || this.minVertex > minVertex) this.minVertex = minVertex;
     }
     adj(x) {
