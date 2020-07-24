@@ -15,7 +15,8 @@ module.exports = {
     'svelte3'
   ],
   ignorePatterns: [
-    'dist/'
+    'dist/',
+    'test/'
   ],
   overrides: [
     {

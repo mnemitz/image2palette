@@ -8,6 +8,9 @@ export class Graph {
      */
     constructor(iter) {
         this.adjList = new Map();
+		if (!iter) {
+			return;
+		}
         for (const { v , w, weight } of iter) {
             this.addEdge(v, w, weight);
         }

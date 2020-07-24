@@ -17,6 +17,7 @@
 	import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
 
 	import { Graph } from './util/graph';
+	import { geometryGraphNodes } from './util/geometry';
 	import { serialize8BitColor, deserialize8BitColor } from './util/color';
 
 	export let inputImagePath;
@@ -48,7 +49,7 @@
 			selectedColors = [];
 			distinctColorsP = drawInputImageToCanvas(img).then(getDistinctColors);
 			convexGeometryP = distinctColorsP.then(getConvexGeometry);
-			graphP = convexGeometryP.then(getGraph)
+			graphP = convexGeometryP.then((geometry) => new Graph(geometryGraphNodes(geometry)))
 	}
 
 	function drawInputImageToCanvas(img) {
@@ -91,35 +92,6 @@
 			console.log('getting convex geom');
 			const vectors = colors.map(({ r, g, b }) => new Vector3(r,g,b));
 			return new ConvexGeometry(vectors);
-	}
-
-	function getGraph(geometry) {
-			const { faces, vertices } = geometry;
-
-			const color = i => {
-					const {x,y,z} = vertices[i];
-					return serialize8BitColor(x,y,z);
-			};
-			const dist = (a,b) => vertices[a].distanceTo(vertices[b]);
-			return new Graph((function* () {
-					for (const {a,b,c} of faces) {
-							yield {
-									v: color(a),
-									w: color(b),
-									weight: dist(a,b),
-							};
-							yield {
-									v: color(b),
-									w: color(c),
-									weight: dist(b,c),
-							};
-							yield {
-									v: color(a),
-									w: color(c),
-									weight: dist(a,c),
-							};
-					}
-			})());
 	}
 </script>
 <style>
