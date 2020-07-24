@@ -1,4 +1,4 @@
-import { filterIter, min, decrCompare, cloneNestedMap } from './util';
+import { filterIter, min, decrCompare } from './util';
 import { UnionFind } from './unionfind';
 
 export class Graph {
@@ -27,7 +27,7 @@ export class Graph {
         return this.adjList.get(x);
     }
     *adjNodes(x) {
-        for (let [target, weight] of this.adj(x)) {
+        for (let [target] of this.adj(x)) {
             yield target;
         }
     }

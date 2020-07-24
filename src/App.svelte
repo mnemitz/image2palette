@@ -1,8 +1,7 @@
 <script>
 	import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
-	import Drawer, {AppContent, Content, Header, Title as DrawerTitle, Subtitle, Scrim} from '@smui/drawer';
+	import Drawer, {AppContent, Header, Title as DrawerTitle, Scrim} from '@smui/drawer';
 	import IconButton from '@smui/icon-button';
-	import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
 	import MediaQuery from './MediaQuery.svelte';
 	import Options from './Options.svelte';
 	import ImageContext from './ImageContext.svelte';

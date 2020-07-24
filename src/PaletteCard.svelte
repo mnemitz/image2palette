@@ -1,8 +1,7 @@
 <script>
-	import Paper, {Title, Subtitle, Content} from '@smui/paper';
+	import Paper, { Title } from '@smui/paper';
 	import IconButton from '@smui/icon-button';
 	import Palette from './Palette.svelte';
-	import {deserialize8BitColor} from './util/color';
 
 	export let colors = [];
 

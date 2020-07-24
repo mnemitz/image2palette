@@ -1,5 +1,3 @@
-import { Color, Vector3 } from 'three';
-
 export function padLeft(s, n) {
     const padSize = n - s.length;
     if (padSize > 0) {
@@ -7,6 +5,7 @@ export function padLeft(s, n) {
     }
     return s.toString();
 }
+
 export function makeCubePoints(n) {
     if (isNaN(n)) {
         throw new Error('Input must be a number, or parseable as a number');
@@ -17,36 +16,12 @@ export function makeCubePoints(n) {
     );
 }
 
-export function randomPoints(setPoints) {
-    const numPoints = 4;
-    const max = 255;
-    const points = [];
-    for(let i = 0; i < numPoints; i++) {
-        points.push([
-            Math.floor(Math.random()*max),
-            Math.floor(Math.random()*max),
-            Math.floor(Math.random()*max)
-        ]);
-    }
-    setPoints(points);
-}
-
 export function vectorEquality(a,b) {
     if (a.length != b.length) return false;
     for (let i=0; i<a.length; i++) {
         if (a[i] != b[i]) return false;
     }
     return true;
-}
-
-export function max(a,b) {
-    if (a >= b) return a;
-    return b;
-}
-
-export function min(a,b) {
-    if (a <= b) return a;
-    return b;
 }
 
 export function groupBy(list, keyGetter) {
