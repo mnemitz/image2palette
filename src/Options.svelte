@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-	import {AppContent, Content, Header, Title as DrawerTitle, Subtitle, Scrim} from '@smui/drawer';
-	import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+	import { Content } from '@smui/drawer';
+	import List, { Item, Text } from '@smui/list';
 	import IconButton from '@smui/icon-button';
 
 	const dispatch = createEventDispatcher();

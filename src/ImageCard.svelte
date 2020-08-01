@@ -1,5 +1,5 @@
 <script>
-	import Card, { Content, Media, MediaContent, PrimaryAction } from '@smui/card';
+	import Card, { Content, Media, PrimaryAction } from '@smui/card';
 	export let src;
 </script>
 <style>

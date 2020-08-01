@@ -1,4 +1,4 @@
-import { filterIter, min, decrCompare, cloneNestedMap } from './util';
+import { filterIter, decrCompare } from './util';
 import { UnionFind } from './unionfind';
 
 export class Graph {
@@ -8,6 +8,9 @@ export class Graph {
      */
     constructor(iter) {
         this.adjList = new Map();
+		if (!iter) {
+			return;
+		}
         for (const { v , w, weight } of iter) {
             this.addEdge(v, w, weight);
         }
@@ -19,7 +22,7 @@ export class Graph {
         this.adjList.get(w).set(v, weight);
 
         // set the min vertex value, for default representations
-        const minVertex = min(v,w);
+        const minVertex = Math.min(v,w);
         if (!this.minVertex || this.minVertex > minVertex) this.minVertex = minVertex;
     }
     adj(x) {
@@ -27,7 +30,7 @@ export class Graph {
         return this.adjList.get(x);
     }
     *adjNodes(x) {
-        for (let [target, weight] of this.adj(x)) {
+        for (let [target] of this.adj(x)) {
             yield target;
         }
     }

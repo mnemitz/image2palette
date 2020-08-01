@@ -1,8 +1,7 @@
 <script>
-	import { createEventDispatcher, onMount } from 'svelte';
-	import Card, { Content, PrimaryAction } from '@smui/card';
+	import { createEventDispatcher} from 'svelte';
+	import Card, { PrimaryAction } from '@smui/card';
 	import Checkbox from '@smui/checkbox';
-	import FormField from '@smui/form-field';
 	import { deserialize8BitColor } from './util/color';
 	import { padLeft } from './util/util';
 
