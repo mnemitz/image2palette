@@ -8,17 +8,16 @@
 	// DOM components
 	import Checkbox from '@smui/checkbox';
 	import FormField from '@smui/form-field';
-	import Card, { Content } from '@smui/card';
 	import ImageCard from './ImageCard.svelte';
 	import Spinner from 'svelte-spinner';
 	import ColorSelector from './ColorSelector.svelte';
 	import PaletteCard from './PaletteCard.svelte';
 
-	import { Color, Vector3 } from 'three';
+	import { Vector3 } from 'three';
 	import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
 
-	import { filterIter } from './util/util'
 	import { Graph } from './util/graph';
+	import { geometryGraphNodes } from './util/geometry';
 	import { serialize8BitColor, deserialize8BitColor } from './util/color';
 
 	export let inputImagePath;
@@ -56,11 +55,11 @@
 			selectedColors = [];
 			distinctColorsP = drawInputImageToCanvas(img).then(getDistinctColors);
 			convexGeometryP = distinctColorsP.then(getConvexGeometry);
-			graphP = convexGeometryP.then(getGraph)
+			graphP = convexGeometryP.then((geometry) => new Graph(geometryGraphNodes(geometry)))
 	}
 
 	function drawInputImageToCanvas(img) {
-			return new Promise((resolve, reject) => {
+			return new Promise((resolve) => {
 					const canvas = document.createElement('canvas');
 					canvas.width = img.naturalWidth;
 					canvas.height = img.naturalHeight;
@@ -83,7 +82,7 @@
 					const ctx = canvas.getContext('2d');
 					const { data } = ctx.getImageData(0, 0, width, height);
 					for (let i = 0; i < data.length; i += 4) {
-							const [r,g,b,a] = [0,1,2,3].map(j => data[i+j]);
+							const [r,g,b] = [0,1,2].map(j => data[i+j]);
 							s.add(serialize8BitColor(r,g,b));
 					}
 					resolve(Array.from(s, deserialize8BitColor));
@@ -99,35 +98,6 @@
 			console.log('getting convex geom');
 			const vectors = colors.map(({ r, g, b }) => new Vector3(r,g,b));
 			return new ConvexGeometry(vectors);
-	}
-
-	function getGraph(geometry) {
-			const { faces, vertices } = geometry;
-
-			const color = i => {
-					const {x,y,z} = vertices[i];
-					return serialize8BitColor(x,y,z);
-			};
-			const dist = (a,b) => vertices[a].distanceTo(vertices[b]);
-			return new Graph((function* () {
-					for (const {a,b,c} of faces) {
-							yield {
-									v: color(a),
-									w: color(b),
-									weight: dist(a,b),
-							};
-							yield {
-									v: color(b),
-									w: color(c),
-									weight: dist(b,c),
-							};
-							yield {
-									v: color(a),
-									w: color(c),
-									weight: dist(a,c),
-							};
-					}
-			})());
 	}
 </script>
 <style>

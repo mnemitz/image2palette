@@ -1,5 +1,3 @@
-import { groupBy } from './util';
-
 /**
  * Creates a union find datastructure
  * Elements must be hashable types for consistency

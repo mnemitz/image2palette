@@ -1,7 +1,6 @@
 <script>
 	import {createEventDispatcher} from 'svelte';
 	import ColorCard from './ColorCard.svelte';
-	import {deserialize8BitColor} from './util/color';
 
 	export let colors = [];
 	export let selectedColors = [];
