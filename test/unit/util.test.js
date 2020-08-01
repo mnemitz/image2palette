@@ -1,9 +1,9 @@
 import { expect, assert } from 'chai';
 import { makeCubePoints, padLeft, mapDeepEqual, cloneNestedMap } from '../../src/util/util';
-import { Vector3 } from 'three';
 
+// TODO: figure out how to lint the tests
 describe('Utility function tests', () => {
-    describe('Pad Left', () => {
+	describe('Pad Left', () => {
         describe('When passing a number', () => {
             it('Should return a string representation of it, padded to the left by 3', () => {
                 expect(padLeft('0', 3)).to.be.eq('000');
