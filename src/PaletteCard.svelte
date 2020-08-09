@@ -10,24 +10,34 @@
 	}
 </script>
 <style>
-.container {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    display: flex;
-    width: 100%;
-}
 * :global(.palette-card-paper) {
     display: flex;
     flex-direction: column;
-    width: 100%;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+}
+#header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+#button-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
 }
 </style>
 <div class="container">
     <Paper class="palette-card-paper">
-        <Title>Palette</Title>
+				<div id="header">
+					<Title>Palette</Title>
+					<div id="button-container">
+						<IconButton class="material-icons" on:click={() => colors = []}>
+								delete
+						</IconButton>
+					</div>
+				</div>
         <Palette bind:colors={colors}/>
-        <IconButton class="material-icons" on:click={() => colors = []}>
-            delete
-        </IconButton>
     </Paper>
 </div>

@@ -109,7 +109,7 @@
 </style>
 <div class="activity">
     <div>
-        <div id="canvas-container">
+        <div class="container">
             <ThreeScene>
                 {#if showAxes}
                     <AxesHelper magnitude={512}/>
@@ -133,7 +133,7 @@
                 />
             </ThreeScene>
         </div>
-        <div class="image-container">
+        <div class="container">
             {#if !inputImagePath}
                 <p>No image selected!</p>
             {:else}
