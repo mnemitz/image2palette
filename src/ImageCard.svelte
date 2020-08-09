@@ -5,15 +5,16 @@
 <style>
 #card-container {
     width: 100%;
+		height: 100%;
     display: inline-flex;
     justify-content: center;
     align-items: center;
 }
 </style>
 <div id="card-container">
-    <Card style="width: 100%;">
+    <Card style="width: 100%; height: 100%;">
         <PrimaryAction>
-            <Media style={`background-image: url(${src});`} class="card-media-16x9" aspectRatio="16x9"/>
+					<Media style={`background-image: url(${src});`} class="card-media-16x9" aspectRatio="16x9"/>
             <Content class="mdc-typography--body2">
                 <slot></slot>
             </Content>

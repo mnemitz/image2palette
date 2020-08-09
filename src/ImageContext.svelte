@@ -1,3 +1,87 @@
+<style>
+	.spinner-container {
+		position: absolute;
+		top: 10%;
+		left: 10%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		pointer-events: none;
+	}
+	#image-card-container {
+		height: 100%;
+	}
+</style>
+<div class="activity">
+    <div>
+        <div class="container">
+            {#if !inputImagePath}
+                <p>No image selected!</p>
+            {:else}
+                <div id="image-card-container">
+                    <ImageCard src={inputImagePath}>
+                        <strong>Distinct colors: </strong>
+                        {#await distinctColorsP}
+                            ...
+                        {:then distinctColors}
+                            {#if distinctColors}
+                                <span>
+                                    {distinctColors.length}
+                                </span>
+                            {/if}
+                        {/await}
+                        <strong>Convex colors: </strong>
+                        {#await graphP}
+                            ...
+                        {:then graph}
+                            {#if graph}
+                                <span>
+                                    {graph.vertexCount()}
+                                </span>
+                            {/if}
+                        {/await}
+                    </ImageCard>
+                </div>
+            {/if}
+        </div>
+        <div class="container">
+            <ThreeScene>
+                {#if showAxes}
+                    <AxesHelper magnitude={512}/>
+                {/if}
+                {#await convexGeometryP}
+                    <div class="spinner-container">
+                        <Spinner
+                            thickness={3}
+                            color="white"
+                            size={150}
+                        />
+                    </div>
+                {:then geometry}
+                    <ColoredWireFrame
+                        geometry={geometry}
+                    />
+                {/await}
+                <ColorPoint
+                    id="hovered"
+                    color={hoveredColor}
+                />
+            </ThreeScene>
+        </div>
+    </div>
+    <div>
+        {#await graphP}
+            <Spinner color="white"/>
+        {:then graph}
+            <ColorSelector
+                colors={graph && Array.from(graph.vertices())}
+                bind:selectedColors={selectedColors}
+                on:hovered={({detail: color}) => hoveredColor = color}
+            />
+        {/await}
+        <PaletteCard bind:colors={selectedColors}/>
+    </div>
+</div>
 <script>
 	// three components
 	import ThreeScene from './three-components/ThreeScene.svelte';
@@ -96,84 +180,3 @@
 			return new ConvexGeometry(vectors);
 	}
 </script>
-<style>
-    .spinner-container {
-        position: absolute;
-        top: 10%;
-        left: 10%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        pointer-events: none;
-    }
-</style>
-<div class="activity">
-    <div>
-        <div class="container">
-            <ThreeScene>
-                {#if showAxes}
-                    <AxesHelper magnitude={512}/>
-                {/if}
-                {#await convexGeometryP}
-                    <div class="spinner-container">
-                        <Spinner
-                            thickness={3}
-                            color="white"
-                            size={150}
-                        />
-                    </div>
-                {:then geometry}
-                    <ColoredWireFrame
-                        geometry={geometry}
-                    />
-                {/await}
-                <ColorPoint
-                    id="hovered"
-                    color={hoveredColor}
-                />
-            </ThreeScene>
-        </div>
-        <div class="container">
-            {#if !inputImagePath}
-                <p>No image selected!</p>
-            {:else}
-                <div id="image-card-container">
-                    <ImageCard src={inputImagePath}>
-                        <strong>Distinct colors: </strong>
-                        {#await distinctColorsP}
-                            ...
-                        {:then distinctColors}
-                            {#if distinctColors}
-                                <span>
-                                    {distinctColors.length}
-                                </span>
-                            {/if}
-                        {/await}
-                        <strong>Convex colors: </strong>
-                        {#await graphP}
-                            ...
-                        {:then graph}
-                            {#if graph}
-                                <span>
-                                    {graph.vertexCount()}
-                                </span>
-                            {/if}
-                        {/await}
-                    </ImageCard>
-                </div>
-            {/if}
-        </div>
-    </div>
-    <div>
-        {#await graphP}
-            <Spinner color="white"/>
-        {:then graph}
-            <ColorSelector
-                colors={graph && Array.from(graph.vertices())}
-                bind:selectedColors={selectedColors}
-                on:hovered={({detail: color}) => hoveredColor = color}
-            />
-        {/await}
-        <PaletteCard bind:colors={selectedColors}/>
-    </div>
-</div>
