@@ -6,8 +6,6 @@
 	import ColorPoint from './three-components/ColorPoint.svelte';
 
 	// DOM components
-	import Checkbox from '@smui/checkbox';
-	import FormField from '@smui/form-field';
 	import ImageCard from './ImageCard.svelte';
 	import Spinner from 'svelte-spinner';
 	import ColorSelector from './ColorSelector.svelte';
@@ -23,8 +21,7 @@
 	import './styles/activity.scss';
 
 	export let inputImagePath;
-	let showAxes = false;
-	let showMST = false;
+	let showAxes = false; // TODO: export
 
 	let distinctColorsP;
 	let convexGeometryP;
