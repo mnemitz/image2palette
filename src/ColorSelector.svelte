@@ -1,6 +1,7 @@
 <script>
 	import {createEventDispatcher} from 'svelte';
 	import ColorCard from './ColorCard.svelte';
+	import './styles/colorselector.scss';
 
 	export let colors = [];
 	export let selectedColors = [];
@@ -14,15 +15,7 @@
 			}
 	}
 </script>
-<style>
-.container {
-    display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-</style>
-<div class="container">
+<div class="color-card-container">
     {#each colors as color}
         <ColorCard
             color={color}

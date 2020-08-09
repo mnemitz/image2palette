@@ -20,7 +20,7 @@
             {:else}
                 <div id="image-card-container">
                     <ImageCard src={inputImagePath}>
-                        <strong>Distinct colors: </strong>
+                        <strong>Distinct&nbsp;colors: </strong>
                         {#await distinctColorsP}
                             ...
                         {:then distinctColors}
@@ -30,7 +30,7 @@
                                 </span>
                             {/if}
                         {/await}
-                        <strong>Convex colors: </strong>
+                        <strong>Convex&nbsp;colors: </strong>
                         {#await graphP}
                             ...
                         {:then graph}
@@ -44,7 +44,7 @@
                 </div>
             {/if}
         </div>
-        <div class="container">
+        <div class="container flexgrow">
             <ThreeScene>
                 {#if showAxes}
                     <AxesHelper magnitude={512}/>
