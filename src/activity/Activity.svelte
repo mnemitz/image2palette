@@ -84,10 +84,10 @@
 </div>
 <script>
 	// three components
-	import ThreeScene from './three-components/ThreeScene.svelte';
-	import ColoredWireFrame from './three-components/ColoredWireFrame.svelte';
-	import AxesHelper from './three-components/AxesHelper.svelte';
-	import ColorPoint from './three-components/ColorPoint.svelte';
+	import ThreeScene from '../three-components/ThreeScene.svelte';
+	import ColoredWireFrame from '../three-components/ColoredWireFrame.svelte';
+	import AxesHelper from '../three-components/AxesHelper.svelte';
+	import ColorPoint from '../three-components/ColorPoint.svelte';
 
 	// DOM components
 	import ImageCard from './ImageCard.svelte';
@@ -98,11 +98,11 @@
 	import { Vector3 } from 'three';
 	import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
 
-	import { Graph } from './util/graph';
-	import { geometryGraphNodes } from './util/geometry';
-	import { serialize8BitColor, deserialize8BitColor } from './util/color';
+	import { Graph } from '../util/graph';
+	import { geometryGraphNodes } from '../util/geometry';
+	import { serialize8BitColor, deserialize8BitColor } from '../util/color';
 
-	import './styles/activity.scss';
+	import '../styles/activity.scss';
 
 	export let inputImagePath;
 	let showAxes = false; // TODO: export

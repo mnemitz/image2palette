@@ -4,7 +4,7 @@
 	import IconButton from '@smui/icon-button';
 	import MediaQuery from './MediaQuery.svelte';
 	import Options from './Options.svelte';
-	import ImageContext from './ImageContext.svelte';
+	import Activity from './activity/Activity.svelte';
 
 	let prominent = false;
 	let dense = false;
@@ -85,7 +85,7 @@
 		<Scrim/>
 		<AppContent>
 			<main class="main-content">
-				<ImageContext
+				<Activity
 					inputImagePath={inputImagePath}
 				/>
 			</main>

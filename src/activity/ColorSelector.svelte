@@ -1,7 +1,7 @@
 <script>
 	import {createEventDispatcher} from 'svelte';
 	import ColorCard from './ColorCard.svelte';
-	import './styles/colorselector.scss';
+	import '../styles/colorselector.scss';
 
 	export let colors = [];
 	export let selectedColors = [];

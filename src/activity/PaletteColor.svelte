@@ -1,7 +1,7 @@
 <script>
-	import {deserialize8BitColor} from './util/color';
+	import {deserialize8BitColor} from '../util/color';
 	import { spring } from 'svelte/motion';
-	import pannable from './pannable.js';
+	import pannable from '../util/pannable';
 	export let color;
 
 	const backgroundColorText = `rgb(${[...Object.values(deserialize8BitColor(color))]})`;
