@@ -20,12 +20,12 @@
 	import { geometryGraphNodes } from './util/geometry';
 	import { serialize8BitColor, deserialize8BitColor } from './util/color';
 
+	import './styles/activity.scss';
+
 	export let inputImagePath;
 	let showAxes = false;
 	let showMST = false;
 
-	// THERE'S A LOT OF STATE HERE
-	// this should be broken up into more separate components that can dispatch events and such
 	let distinctColorsP;
 	let convexGeometryP;
 	let graphP;
@@ -95,36 +95,11 @@
 	 * @returns {THREE.Geometry}
 	 */
 	function getConvexGeometry(colors) {
-			console.log('getting convex geom');
 			const vectors = colors.map(({ r, g, b }) => new Vector3(r,g,b));
 			return new ConvexGeometry(vectors);
 	}
 </script>
 <style>
-    #outer {
-        display: grid;
-        grid-template-columns: 33% 67%;
-        grid-template-rows: 100%;
-        height: 100%;
-        max-height: 100%;
-    }
-    #left {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-    }
-    #right {
-        height: 100%;
-        max-height: 100%;
-        display: grid;
-        grid-template-rows: 60% 40%;
-    }
-    #canvas-container {
-        height: 40vh;
-        margin: 10px;
-    }
-
     .spinner-container {
         position: absolute;
         top: 10%;
@@ -134,29 +109,10 @@
         align-items: center;
         pointer-events: none;
     }
-
-    .floaty {
-        padding: 5px;
-        position: absolute;
-        background-color: rgba(255,255,255,0.7);
-    }
-    #image-card-container {
-        margin: 10px;
-    }
 </style>
-<div id="outer">
-    <div id="left">
+<div class="activity">
+    <div>
         <div id="canvas-container">
-            <div class="floaty mdc-typography--body2">
-                <FormField>
-                    <Checkbox bind:checked={showAxes}/>
-                    <span slot="label">Show axes</span>
-                </FormField>
-                <FormField>
-                    <Checkbox bind:checked={showMST}/>
-                    <span slot="label">Show MST</span>
-                </FormField>
-            </div>
             <ThreeScene>
                 {#if showAxes}
                     <AxesHelper magnitude={512}/>
@@ -211,7 +167,7 @@
             {/if}
         </div>
     </div>
-    <div id="right">
+    <div>
         {#await graphP}
             <Spinner color="white"/>
         {:then graph}

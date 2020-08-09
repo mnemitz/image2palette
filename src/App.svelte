@@ -30,7 +30,6 @@
 	}
 	.main-content {
 		overflow: none;
-		/* padding: 16px; */
 		height: 100%;
 		box-sizing: border-box;
 		width: 100%;
@@ -48,7 +47,7 @@
 		<TopAppBar variant="static" {prominent} {dense} color={secondaryColor ? 'secondary' : 'primary'}>
 			<Row>
 				<Section>
-					<MediaQuery query="(max-width: 599px)" let:matches>
+					<MediaQuery query="(max-width: 1024px)" let:matches>
 						{#if matches}
 							<IconButton
 								id="sidemenu-toggle"
@@ -69,9 +68,12 @@
 		</TopAppBar>
 	</div>
 	<div class="drawer-container">
-		<MediaQuery query="(min-width: 600px)" let:matches>
-			{#if matches}
-				<Drawer class="site-drawer">
+		<MediaQuery query="(min-width: 1025px)" let:matches>
+			<Drawer
+				class="site-drawer"
+				variant={matches? null : "modal"} 
+				bind:open={modalDrawerOpen}
+			>
 					<Header>
 						<DrawerTitle>Options</DrawerTitle>
 					</Header>
@@ -79,16 +81,6 @@
 						on:inputImagePath={({detail: path }) => inputImagePath = path}
 					/>
 				</Drawer>
-			{:else}
-				<Drawer variant="modal" bind:open={modalDrawerOpen}>
-					<Header>
-						<DrawerTitle>Options (mobile)</DrawerTitle>
-					</Header>
-					<Options
-						on:inputImagePath={({detail: path }) => inputImagePath = path}
-					/>
-				</Drawer>
-			{/if}
 		</MediaQuery>
 		<Scrim/>
 		<AppContent>
