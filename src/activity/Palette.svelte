@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+		padding: 5px;
 }
 </style>
 <div class="palette-container">

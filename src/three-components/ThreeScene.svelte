@@ -5,13 +5,13 @@
 
 	export let cameraPosition = new Vector3(500, 500, 500);
 
-	let container;
+	let canvasContainer;
 	let canvas;
 	let threeContext;
 
 	onMount(() => {
-			canvas.width = container.clientWidth;
-			canvas.height = container.clientHeight;
+			canvas.width = canvasContainer.clientWidth;
+			canvas.height = canvasContainer.clientHeight;
 			threeContext = new ThreeContext(canvas, cameraPosition)
 	});
 
@@ -87,14 +87,18 @@
 	}
 </script>
 <style>
-    .container {
-        height: 100%;
-        width: 100%;
-        margin: 0px;
-        padding: 0px;
-    }
+	#canvas-container {
+		padding: 0;
+		height: 100%;
+		width: 100%;
+	}
+	canvas {
+		height: 100%;
+		width: 100%;
+		border-radius: 4px;
+	}
 </style>
-<div bind:this={container} class="container">
+<div bind:this={canvasContainer} id="canvas-container">
     <canvas bind:this={canvas}/>
     {#if threeContext}
         <slot></slot>

@@ -3,7 +3,7 @@
 	import { Content } from '@smui/drawer';
 	import List, { Item, Text } from '@smui/list';
 	import IconButton from '@smui/icon-button';
-	import ExamplesDialog from './ExamplesDialog.svelte';
+	import ExamplesDialog from './dialogs/ExamplesDialog.svelte';
 
 	const dispatch = createEventDispatcher();
 

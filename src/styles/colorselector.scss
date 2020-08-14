@@ -1,0 +1,18 @@
+.color-card-container{
+    display: grid;
+    overflow-x: hidden;
+    overflow-y: scroll;
+	scrollbar-color: dark;
+}
+
+@media (orientation: portrait) {
+	.color-card-container {
+		grid-template-columns: 33% 33% 33%;
+	}
+}
+
+@media (orientation: landscape) {
+	.color-card-container {
+		grid-template-columns: 25% 25% 25% 25%;
+	}
+}

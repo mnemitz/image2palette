@@ -22,7 +22,7 @@
 	import Dialog, {Title, Content} from '@smui/dialog';
 	import ImageList, {Item, ImageAspectContainer, Image, Supporting, Label} from '@smui/image-list';
 	import Div from '@smui/common/Div.svelte';
-	import './imagelist.scss';
+	import '../styles/imagelist.scss';
 
 	let dialog;
 
