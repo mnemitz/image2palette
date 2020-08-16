@@ -96,7 +96,7 @@
 	import PaletteCard from './PaletteCard.svelte';
 
 	import { Vector3 } from 'three';
-	import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
+	import { ConvexGeometry } from '../three-components/three-examples/ConvexGeometry';
 
 	import { Graph } from '../util/graph';
 	import { geometryGraphNodes } from '../util/geometry';
