@@ -1,7 +1,7 @@
 <script>
 	import { onMount, setContext } from 'svelte';
 	import { PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
-	import { OrbitControls } from 'three-orbitcontrols-ts';
+	import { OrbitControls } from './three-examples/OrbitControls';
 
 	export let cameraPosition = new Vector3(500, 500, 500);
 
