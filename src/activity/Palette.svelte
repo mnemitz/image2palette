@@ -12,7 +12,6 @@
 </style>
 <div class="palette-container">
     {#each colors as color}
-        <!-- <div class="palette-color" style={backgroundColor(color)}/> -->
-        <PaletteColor color={color}/>
+			<PaletteColor color={color}/>
     {/each}
 </div>

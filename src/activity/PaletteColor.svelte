@@ -4,7 +4,7 @@
 	import pannable from '../util/pannable';
 	export let color;
 
-	const backgroundColorText = `rgb(${[...Object.values(deserialize8BitColor(color))]})`;
+	const backgroundColorText = (color) => `rgb(${[...Object.values(deserialize8BitColor(color))]})`;
 
 	const coords = spring({x: 0, y: 0}, {
 			stiffness: 0.2,
@@ -49,11 +49,11 @@
 }
 </style>
 <div
-    use:pannable
-    :panstart={handlePanStart}
-    on:panmove={handlePanMove}
-    on:panend={handlePanEnd}
-    class="palette-color"
-    style="background-color: {backgroundColorText}; transform: translate({$coords.x}px,{$coords.y}px);"
+	use:pannable
+	:panstart={handlePanStart}
+	on:panmove={handlePanMove}
+	on:panend={handlePanEnd}
+	class="palette-color"
+	style="background-color: {backgroundColorText(color)}; transform: translate({$coords.x}px,{$coords.y}px);"
 >
 </div>
