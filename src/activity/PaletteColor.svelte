@@ -49,7 +49,11 @@
 }
 </style>
 <div
-    class="palette-color"
-    style="background-color: {backgroundColorText(color)}; transform: translate({$coords.x}px,{$coords.y}px);"
+	use:pannable
+	:panstart={handlePanStart}
+	on:panmove={handlePanMove}
+	on:panend={handlePanEnd}
+	class="palette-color"
+	style="background-color: {backgroundColorText(color)}; transform: translate({$coords.x}px,{$coords.y}px);"
 >
 </div>
