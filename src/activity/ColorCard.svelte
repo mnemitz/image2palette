@@ -16,42 +16,42 @@
 </script>
 <style>
 #container {
-    margin: 5px;
-    max-height: 60px;
-    height: 100%;
+	margin: 5px;
+	max-height: 60px;
+	height: 100%;
 }
 #container span {
-    color: transparent;
-    text-transform: uppercase;
-    font-weight: bold;
-    line-height: 40px;
-    text-align: center;
+	color: transparent;
+	text-transform: uppercase;
+	font-weight: bold;
+	line-height: 40px;
+	text-align: center;
 }
 #container:hover .light {
-    color: white;
+	color: white;
 }
 #container:hover .dark {
-    color: black;
+	color: black;
 }
 #content {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 25% 50% 25%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: 25% 50% 25%;
 }
 </style>
 <div
-    id="container"
-    on:mouseover={() => dispatch('mouseover')}
-    class="checkbox-inverted"
+	id="container"
+	on:mouseover={() => dispatch('mouseover')}
+	class="checkbox-inverted"
 >
-    <Card style={`background-color: ${colorText}`}>
-        <PrimaryAction ripple on:click={() => dispatch('change', !selected)}>
-            <div id="content" class="mdc-typography--button">
-                <Checkbox bind:checked={selected}/>
-                <span class={`text ${showLight ? 'light' : 'dark'}`}>
-                    {colorText}
-                </span>
-            </div>
-        </PrimaryAction>
-    </Card>
+	<Card style={`background-color: ${colorText}`}>
+		<PrimaryAction ripple on:click={() => dispatch('change', !selected)}>
+			<div id="content" class="mdc-typography--button">
+				<Checkbox bind:checked={selected}/>
+				<span class={`text ${showLight ? 'light' : 'dark'}`}>
+					{colorText}
+				</span>
+			</div>
+		</PrimaryAction>
+	</Card>
 </div>

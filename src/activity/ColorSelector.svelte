@@ -16,12 +16,12 @@
 	}
 </script>
 <div class="color-card-container">
-    {#each colors as color}
-        <ColorCard
-            color={color}
-            on:mouseover={() => dispatch('hovered', color)}
-            on:change={({detail: selected}) => handleSelection(selected, color)}
-            selected={selectedColors.indexOf(color) >= 0}
-        />
-    {/each}
+	{#each colors as color}
+		<ColorCard
+			color={color}
+			on:mouseover={() => dispatch('hovered', color)}
+			on:change={({detail: selected}) => handleSelection(selected, color)}
+			selected={selectedColors.indexOf(color) >= 0}
+		/>
+	{/each}
 </div>
