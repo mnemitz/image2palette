@@ -63,14 +63,14 @@
 
 	function drawInputImageToCanvas(img) {
 		return new Promise((resolve) => {
-				const canvas = document.createElement('canvas');
-				canvas.width = img.naturalWidth;
-				canvas.height = img.naturalHeight;
-				const ctx = canvas.getContext('2d');
-				ctx.drawImage(img, 0, 0);
-				// Breathing room for the image to render first
-				// How to break this up to avoid this lock?
-				setTimeout(() => resolve(canvas), 1000);
+			const canvas = document.createElement('canvas');
+			canvas.width = img.naturalWidth;
+			canvas.height = img.naturalHeight;
+			const ctx = canvas.getContext('2d');
+			ctx.drawImage(img, 0, 0);
+			// Breathing room for the image to render first
+			// How to break this up to avoid this lock?
+			setTimeout(() => resolve(canvas), 1000);
 		});
 	}
 	/**

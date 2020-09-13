@@ -31,7 +31,7 @@
 
 	function removeActiveListener() {
 		if (mql && mqlListener) {
-				mql.removeListener(mqlListener);
+			mql.removeListener(mqlListener);
 		}
 	}
 </script>
