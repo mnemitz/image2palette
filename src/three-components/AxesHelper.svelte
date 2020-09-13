@@ -19,7 +19,7 @@ threeContext.scene.add(axesHelper);
 threeContext.animate();
 
 onDestroy(() => {
-    threeContext.scene.remove(axesHelper)
-    threeContext.animate();
+	threeContext.scene.remove(axesHelper)
+	threeContext.animate();
 });
 </script>

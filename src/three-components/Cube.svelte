@@ -13,13 +13,13 @@ const threeContext = getThreeContext();
 const name = `cube:${id}`;
 
 $: {
-    const oldCube = threeContext.scene.getObjectByName(name);
-    threeContext.scene.remove(oldCube);
-    const geometry = new BoxGeometry(n,n,n);
-    const material = new MeshBasicMaterial({color});
-    const cube = new Mesh(geometry, material);
-    cube.name = name;
-    threeContext.scene.add(cube);
-    threeContext.animate();
+	const oldCube = threeContext.scene.getObjectByName(name);
+	threeContext.scene.remove(oldCube);
+	const geometry = new BoxGeometry(n,n,n);
+	const material = new MeshBasicMaterial({color});
+	const cube = new Mesh(geometry, material);
+	cube.name = name;
+	threeContext.scene.add(cube);
+	threeContext.animate();
 }
 </script>

@@ -23,22 +23,22 @@
 		geom.elementsNeedUpdate = true;
 		geom.colorsNeedUpdate = true;
 		const material = new MeshBasicMaterial({
-				vertexColors: VertexColors,
-				wireframe: true,
+			vertexColors: VertexColors,
+			wireframe: true,
 		});
 		const sceneObj = new Mesh(geom, material);
 		sceneObj.name = name;
 
 		for (let face of geom.faces) {
-				const { a, b, c } = face;
-				[a,b,c].forEach((vertexIndex, i) => {
-						const { x, y, z } = geom.vertices[vertexIndex];
-						face.vertexColors[i] = new Color(`rgb(${[x,y,z]})`);
-				});
+			const { a, b, c } = face;
+			[a,b,c].forEach((vertexIndex, i) => {
+				const { x, y, z } = geom.vertices[vertexIndex];
+				face.vertexColors[i] = new Color(`rgb(${[x,y,z]})`);
+			});
 		}
 		
 		const {
-				boundingSphere: { center, radius },
+			boundingSphere: { center, radius },
 		} = geom;
 
 		threeContext.scene.add(sceneObj);
@@ -52,8 +52,8 @@
 	}
 
 	onDestroy(() => {
-			const old = threeContext.scene.getObjectByName(name);
-			threeContext.scene.remove(old);
-			threeContext.animate();
+		const old = threeContext.scene.getObjectByName(name);
+		threeContext.scene.remove(old);
+		threeContext.animate();
 	});
 </script>
