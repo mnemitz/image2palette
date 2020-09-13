@@ -1,24 +1,24 @@
 .site-default-theme {
-  @import "@material/theme/color-palette";
+	@import "@material/theme/color-palette";
 
-  $mdc-theme-error: $material-color-orange-100;
-  $mdc-theme-primary: $material-color-grey-900;
-  $mdc-theme-secondary: $material-color-grey-800;
+	$mdc-theme-error: $material-color-orange-100;
+	$mdc-theme-primary: $material-color-grey-900;
+	$mdc-theme-secondary: $material-color-grey-800;
 
-  background-color: $material-color-grey-400;
+	background-color: $material-color-grey-400;
 
-  @import "@material/theme/variables";
-  @each $style in map-keys($mdc-theme-property-values) {
-    --mdc-theme-#{$style}: #{map-get($mdc-theme-property-values, $style)};
-  }
+	@import "@material/theme/variables";
+	@each $style in map-keys($mdc-theme-property-values) {
+		--mdc-theme-#{$style}: #{map-get($mdc-theme-property-values, $style)};
+	}
 
-  @import "@smui/button/style";
-  @import "@smui/fab/style";
+	@import "@smui/button/style";
+	@import "@smui/fab/style";
 }
 
 .checkbox-inverted {
-  @import "@material/theme/color-palette";
-  $mdc-theme-surface: $material-color-grey-800;
-  $mdc-theme-primary: white; 
-  $mdc-theme-secondary: $material-color-grey-900;
+	@import "@material/theme/color-palette";
+	$mdc-theme-surface: $material-color-grey-800;
+	$mdc-theme-primary: white; 
+	$mdc-theme-secondary: $material-color-grey-900;
 }

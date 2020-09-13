@@ -25,9 +25,9 @@
 @media (orientation: landscape) {
 	.activity {
 		display: grid;
-        grid-template-columns: 33% 67%;
-        grid-template-rows: 100%;
-        height: 100%;
+		grid-template-columns: 33% 67%;
+		grid-template-rows: 100%;
+		height: 100%;
 	}
 	.activity > div:first-child {
 		display: flex;

@@ -1,87 +1,3 @@
-<style>
-	.spinner-container {
-		position: absolute;
-		top: 10%;
-		left: 10%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		pointer-events: none;
-	}
-	#image-card-container {
-		height: 100%;
-	}
-</style>
-<div class="activity">
-    <div>
-        <div class="container">
-            {#if !inputImagePath}
-							<PlaceholderImageCard/>
-            {:else}
-                <div id="image-card-container">
-                    <ImageCard src={inputImagePath}>
-                        <strong>Distinct&nbsp;colors: </strong>
-                        {#await distinctColorsP}
-                            ...
-                        {:then distinctColors}
-                            {#if distinctColors}
-                                <span>
-                                    {distinctColors.length}
-                                </span>
-                            {/if}
-                        {/await}
-                        <strong>Convex&nbsp;colors: </strong>
-                        {#await graphP}
-                            ...
-                        {:then graph}
-                            {#if graph}
-                                <span>
-                                    {graph.vertexCount()}
-                                </span>
-                            {/if}
-                        {/await}
-                    </ImageCard>
-                </div>
-            {/if}
-        </div>
-        <div class="container flexgrow">
-            <ThreeScene>
-                {#if showAxes}
-                    <AxesHelper magnitude={512}/>
-                {/if}
-                {#await convexGeometryP}
-                    <div class="spinner-container">
-                        <Spinner
-                            thickness={3}
-                            color="white"
-                            size={150}
-                        />
-                    </div>
-                {:then geometry}
-                    <ColoredWireFrame
-                        geometry={geometry}
-                    />
-                {/await}
-                <ColorPoint
-                    id="hovered"
-                    color={hoveredColor}
-                />
-            </ThreeScene>
-        </div>
-    </div>
-    <div>
-        {#await graphP}
-            <Spinner color="white"/>
-        {:then graph}
-            <ColorSelector
-                colors={graph && Array.from(graph.vertices())}
-                bind:selectedColors={selectedColors}
-                on:hovered={({detail: color}) => hoveredColor = color}
-            />
-        {/await}
-        <PaletteCard bind:colors={selectedColors}/>
-    </div>
-</div>
 <script>
 	// three components
 	import ThreeScene from '../three-components/ThreeScene.svelte';
@@ -123,7 +39,7 @@
 
 	$: {
 		if (!inputImagePath) {
-				break $;
+			break $;
 		}
 		// create off-document img element
 		// use it to draw to an off-document canvas,
@@ -132,30 +48,30 @@
 		img.src = inputImagePath;
 
 		img && img.decode()
-		.then(() => onImageLoad(img))
-		.catch((err) => {
-			console.error('error decoding image', err);
-		})
+			.then(() => onImageLoad(img))
+			.catch((err) => {
+				console.error('error decoding image', err);
+			})
 	}
 
 	function onImageLoad(img) {
-			selectedColors = [];
-			distinctColorsP = drawInputImageToCanvas(img).then(getDistinctColors);
-			convexGeometryP = distinctColorsP.then(getConvexGeometry);
-			graphP = convexGeometryP.then((geometry) => new Graph(geometryGraphNodes(geometry)))
+		selectedColors = [];
+		distinctColorsP = drawInputImageToCanvas(img).then(getDistinctColors);
+		convexGeometryP = distinctColorsP.then(getConvexGeometry);
+		graphP = convexGeometryP.then((geometry) => new Graph(geometryGraphNodes(geometry)))
 	}
 
 	function drawInputImageToCanvas(img) {
-			return new Promise((resolve) => {
-					const canvas = document.createElement('canvas');
-					canvas.width = img.naturalWidth;
-					canvas.height = img.naturalHeight;
-					const ctx = canvas.getContext('2d');
-					ctx.drawImage(img, 0, 0);
-					// Breathing room for the image to render first
-					// How to break this up to avoid this lock?
-					setTimeout(() => resolve(canvas), 1000);
-			});
+		return new Promise((resolve) => {
+			const canvas = document.createElement('canvas');
+			canvas.width = img.naturalWidth;
+			canvas.height = img.naturalHeight;
+			const ctx = canvas.getContext('2d');
+			ctx.drawImage(img, 0, 0);
+			// Breathing room for the image to render first
+			// How to break this up to avoid this lock?
+			setTimeout(() => resolve(canvas), 1000);
+		});
 	}
 	/**
 	 * 
@@ -163,17 +79,17 @@
 	 * @returns {Promise<Array<THREE.Color>>} A set of the canvas's color values
 	 */
 	function getDistinctColors(canvas) {
-			return new Promise(resolve => {
-					const s = new Set();
-					const { width, height } = canvas;
-					const ctx = canvas.getContext('2d');
-					const { data } = ctx.getImageData(0, 0, width, height);
-					for (let i = 0; i < data.length; i += 4) {
-							const [r,g,b] = [0,1,2].map(j => data[i+j]);
-							s.add(serialize8BitColor(r,g,b));
-					}
-					resolve(Array.from(s, deserialize8BitColor));
-			});
+		return new Promise(resolve => {
+			const s = new Set();
+			const { width, height } = canvas;
+			const ctx = canvas.getContext('2d');
+			const { data } = ctx.getImageData(0, 0, width, height);
+			for (let i = 0; i < data.length; i += 4) {
+				const [r,g,b] = [0,1,2].map(j => data[i+j]);
+				s.add(serialize8BitColor(r,g,b));
+			}
+			resolve(Array.from(s, deserialize8BitColor));
+		});
 	}
 
 	/**
@@ -186,3 +102,88 @@
 			return new ConvexGeometry(vectors);
 	}
 </script>
+<style>
+	.spinner-container {
+		position: absolute;
+		top: 10%;
+		left: 10%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		pointer-events: none;
+	}
+	#image-card-container {
+		height: 100%;
+	}
+</style>
+<div class="activity">
+	<div>
+		<div class="container">
+			{#if !inputImagePath}
+				<PlaceholderImageCard/>
+			{:else}
+				<div id="image-card-container">
+					<ImageCard src={inputImagePath}>
+						<strong>Distinct&nbsp;colors: </strong>
+						{#await distinctColorsP}
+							...
+						{:then distinctColors}
+							{#if distinctColors}
+								<span>
+									{distinctColors.length}
+								</span>
+							{/if}
+						{/await}
+						<strong>Convex&nbsp;colors: </strong>
+						{#await graphP}
+							...
+						{:then graph}
+							{#if graph}
+								<span>
+									{graph.vertexCount()}
+								</span>
+							{/if}
+						{/await}
+					</ImageCard>
+				</div>
+			{/if}
+		</div>
+		<div class="container flexgrow">
+			<ThreeScene>
+				{#if showAxes}
+					<AxesHelper magnitude={512}/>
+				{/if}
+				{#await convexGeometryP}
+					<div class="spinner-container">
+						<Spinner
+							thickness={3}
+							color="white"
+							size={150}
+						/>
+					</div>
+				{:then geometry}
+					<ColoredWireFrame
+						geometry={geometry}
+					/>
+				{/await}
+				<ColorPoint
+					id="hovered"
+					color={hoveredColor}
+				/>
+			</ThreeScene>
+		</div>
+	</div>
+	<div>
+		{#await graphP}
+			<Spinner color="white"/>
+		{:then graph}
+			<ColorSelector
+				colors={graph && Array.from(graph.vertices())}
+				bind:selectedColors={selectedColors}
+				on:hovered={({detail: color}) => hoveredColor = color}
+			/>
+		{/await}
+		<PaletteCard bind:colors={selectedColors}/>
+	</div>
+</div>
+

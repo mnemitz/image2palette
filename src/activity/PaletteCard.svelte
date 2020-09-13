@@ -7,11 +7,11 @@
 </script>
 <style>
 	* :global(.palette-card-paper) {
-			display: flex;
-			flex-direction: column;
-			padding: 0;
-			height: 100%;
-			width: 100%;
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		height: 100%;
+		width: 100%;
 	}
 	#header {
 		display: flex;
@@ -28,17 +28,17 @@
 	}
 </style>
 <div class="container">
-    <Paper class="palette-card-paper">
-				<div id="header">
-					<div id="palette-title">
-						<Title>Palette</Title>
-					</div>
-					<div id="button-container">
-						<IconButton class="material-icons" on:click={() => colors = []}>
-								delete
-						</IconButton>
-					</div>
-				</div>
-        <Palette bind:colors={colors}/>
-    </Paper>
+	<Paper class="palette-card-paper">
+		<div id="header">
+			<div id="palette-title">
+				<Title>Palette</Title>
+			</div>
+			<div id="button-container">
+				<IconButton class="material-icons" on:click={() => colors = []}>
+					delete
+				</IconButton>
+			</div>
+		</div>
+		<Palette bind:colors={colors}/>
+	</Paper>
 </div>

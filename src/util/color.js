@@ -5,7 +5,7 @@
  * @returns {Number} a 24 bit representation of the color
  */
 export function serialize8BitColor(r,g,b) {
-    return (r << 16) + (g << 8) + b;
+	return (r << 16) + (g << 8) + b;
 }
 
 /**
@@ -13,10 +13,10 @@ export function serialize8BitColor(r,g,b) {
  * @returns {Number} destructured rgb representation
  */
 export function deserialize8BitColor(c) {
-    const [r,g,b] = [
-        (c & 0xff0000) >> 16,
-        (c & 0x00ff00) >> 8,
-        (c & 0x0000ff),
-    ];
-    return { r, g, b };
+	const [r,g,b] = [
+		(c & 0xff0000) >> 16,
+		(c & 0x00ff00) >> 8,
+		(c & 0x0000ff),
+	];
+	return { r, g, b };
 }
