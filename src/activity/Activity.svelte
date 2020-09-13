@@ -16,7 +16,7 @@
     <div>
         <div class="container">
             {#if !inputImagePath}
-                <p>No image selected!</p>
+							<PlaceholderImageCard/>
             {:else}
                 <div id="image-card-container">
                     <ImageCard src={inputImagePath}>
@@ -103,9 +103,16 @@
 	import { serialize8BitColor, deserialize8BitColor } from '../util/color';
 
 	import '../styles/activity.scss';
+	import PlaceholderImageCard from './PlaceholderImageCard.svelte';
 
-	export let inputImagePath;
-	let showAxes = false; // TODO: export
+	import ConfigStore from '../store/ConfigStore.js';
+
+	let inputImagePath, showAxes;
+
+	ConfigStore.subscribe((config) => {
+		inputImagePath = config.inputImagePath;
+		showAxes = config.showAxes;
+	});
 
 	let distinctColorsP;
 	let convexGeometryP;
@@ -123,7 +130,6 @@
 		// discern the distinct colors etc.
 		const img = new Image();
 		img.src = inputImagePath;
-		console.warn(inputImagePath);
 
 		img && img.decode()
 		.then(() => onImageLoad(img))

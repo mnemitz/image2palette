@@ -1,6 +1,9 @@
 <script>
 	import Card, { Content, Media, PrimaryAction } from '@smui/card';
 	export let src;
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 </script>
 <style>
 #card-container {
@@ -13,7 +16,7 @@
 </style>
 <div id="card-container">
     <Card style="width: 100%; height: 100%;">
-        <PrimaryAction>
+			<PrimaryAction on:click={(e) => dispatch('click', e)}>
 					<Media style={`background-image: url(${src});`} class="card-media-16x9" aspectRatio="16x9"/>
             <Content class="mdc-typography--body2">
                 <slot></slot>

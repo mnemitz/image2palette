@@ -1,18 +1,18 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
 	import { Content } from '@smui/drawer';
 	import List, { Item, Text } from '@smui/list';
 	import IconButton from '@smui/icon-button';
 	import ExamplesDialog from './dialogs/ExamplesDialog.svelte';
+	import ConfigStore from './store/ConfigStore.js';
 
-	const dispatch = createEventDispatcher();
-
-	function getInputFile() {
+	let examplesDialog;
+</script>
+<script context="module">
+	export function getInputFile() {
 			const input = document.createElement('input');
-			function onchange() {
-					return getImage(this.files[0])
-							.then((result) => dispatch('inputImagePath', result))
-							.catch(console.error);
+			async function onchange() {
+				const inputImagePath = await getImage(this.files[0])
+				ConfigStore.update((store) => ({...store, inputImagePath}));
 			}
 
 			input.setAttribute('type', 'file');
@@ -29,8 +29,6 @@
 					setTimeout(reject, 10000);
 			});
 	}
-
-	let examplesDialog;
 </script>
 <style>
 </style>
@@ -57,6 +55,6 @@
     </List>
 		<ExamplesDialog
 			bind:this={examplesDialog}
-			on:selectedImage={({detail: filename}) => dispatch('inputImagePath', filename)}
+			on:selectedImage={({detail: inputImagePath}) => ConfigStore.update((store) => ({...store, inputImagePath}))}
 		/>
 </Content>
