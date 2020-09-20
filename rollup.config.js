@@ -1,10 +1,10 @@
 import svelte from 'rollup-plugin-svelte';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
-import analyze from 'rollup-plugin-analyzer';
 import alias from '@rollup/plugin-alias';
+import visualizer from 'rollup-plugin-visualizer';
 
 const production = !!process.env.ROLLUP_PROD;
 
@@ -15,15 +15,16 @@ module.exports = {
 		format: 'iife',
 		name: 'app'
 	},
-	treeshake: {
-		moduleSideEffects: false
-	},
 	plugins: [
 		alias({
 			entries: [
 				{
 					find: 'three',
-					replacement: __dirname+'/node_modules/three/src/Three',
+					replacement: __dirname+'/three/index.js',
+				},
+				{
+					find: 'three-examples',
+					replacement: __dirname+'/three/examples/index.js',
 				},
 			],
 		}),
@@ -34,7 +35,9 @@ module.exports = {
 			browser: true,
 			dedupe: importee => importee === 'svelte' || importee.startsWith('svelte/'),
 		}),
-		commonjs(),
+		commonjs({
+			exclude: ['node_modules/three/**'],
+		}),
 		postcss({
 			extract: true,
 			minimize: true,
@@ -49,8 +52,11 @@ module.exports = {
 			],
 		}),
 		production && terser(),
-		production && analyze(),
+		production && visualizer(),
 	],
+	treeshake: {
+		moduleSideEffects: false
+	},
 	watch: {
 		clearScreen: false
 	},

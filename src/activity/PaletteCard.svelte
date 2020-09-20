@@ -2,8 +2,11 @@
 	import Paper, { Title } from '@smui/paper';
 	import IconButton from '@smui/icon-button';
 	import Palette from './Palette.svelte';
+	import PaletteExportDialog from '../dialogs/PaletteExportDialog.svelte';
 
 	export let colors = [];
+
+	let paletteExportDialog;
 </script>
 <style>
 	* :global(.palette-card-paper) {
@@ -34,6 +37,9 @@
 				<Title>Palette</Title>
 			</div>
 			<div id="button-container">
+				<IconButton class="material-icons" on:click={paletteExportDialog.open}>
+					cloud_download
+				</IconButton>
 				<IconButton class="material-icons" on:click={() => colors = []}>
 					delete
 				</IconButton>
@@ -41,4 +47,5 @@
 		</div>
 		<Palette bind:colors={colors}/>
 	</Paper>
+	<PaletteExportDialog bind:this={paletteExportDialog}/>
 </div>
