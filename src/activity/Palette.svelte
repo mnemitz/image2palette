@@ -24,7 +24,6 @@
 		paletteColors = e.detail.items;
 	}
 	function handleDndFinalize(e) {
-		console.log('items=', e.detail.items);
 		colors = e.detail.items.map(({color}) => color);
 	}
 
