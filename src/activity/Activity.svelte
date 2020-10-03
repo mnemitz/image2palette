@@ -9,7 +9,7 @@
 	import ImageCard from './ImageCard.svelte';
 	import Spinner from 'svelte-spinner';
 	import ColorSelector from './ColorSelector.svelte';
-	import PaletteCard from './PaletteCard.svelte';
+	import Palette from './Palette.svelte';
 
 	import { Vector3 } from 'three';
 	import { ConvexGeometry } from 'three-examples';
@@ -183,7 +183,7 @@
 				on:hovered={({detail: color}) => hoveredColor = color}
 			/>
 		{/await}
-		<PaletteCard bind:colors={selectedColors}/>
+		<Palette bind:colors={selectedColors}/>
 	</div>
 </div>
 
