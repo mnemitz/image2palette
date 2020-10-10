@@ -90,3 +90,15 @@ export function compose(...fns) {
 		return args;
 	}
 }
+
+export function arrayShallowEquals(a, b) {
+	if (a.length !== b.length) {
+		return false;
+	}
+	for (const [el, index] of a) {
+		if (el !== b[index]) {
+			return false;
+		}
+	}
+	return true;
+}

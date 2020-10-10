@@ -13,20 +13,34 @@
 
 	// From here downward we represent colors in order more verbosely
 	let paletteColors = [];
-	$: paletteColors = colors.map((color, index) => ({
-		id: index,
-		color,
-	}));
+	$: {
+		paletteColors = colors.map((color, index) => ({
+			id: index,
+			color,
+		}));
+	}
+
+	let dragging = true;
 
 	// Drag and drop stuff
 	const flipDurationMs = 300;
 	function handleConsider(e) {
+		dragging = true;
 		paletteColors = e.detail.items;
 	}
 	function handleDndFinalize(e) {
+		dragging = false;
 		colors = e.detail.items.map(({color}) => color);
 	}
 
+	let trashItems = [];
+
+	function handleTrashConsider(e) {
+		trashItems = e.detail.items;
+	}
+	function handleTrashFinalize() {
+		trashItems = [];
+	}
 	async function copyColors() {
 		await copy(...paletteColors.map(({color}) => `#${padLeft(color.toString(16), 6)}`));
 		toast.open();
@@ -80,6 +94,15 @@
 	.palette-color:only-child {
 		border-radius: 10px;
 	}
+	#trash {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		height: 50%;
+		width: 50%;
+		background-color: grey;
+		border-bottom-left-radius: 100%;
+	}
 </style>
 <div class="container">
 	<Paper class="palette-card-paper">
@@ -91,13 +114,15 @@
 				<IconButton class="material-icons" disabled={!colors.length} on:click={copyColors}>
 					content_copy
 				</IconButton>
-				<IconButton class="material-icons" disabled={!colors.length} on:click={() => colors = []}>
-					delete
-				</IconButton>
+				<div>
+					<IconButton class="material-icons" disabled={!colors.length} on:click={() => colors = []}>
+						delete
+					</IconButton>
+				</div>
 			</div>
 		</div>
 		<div class="palette-container" use:dndzone={{items: paletteColors, flipDurationMs}} on:consider={handleConsider} on:finalize={handleDndFinalize}>
-			{#each paletteColors as item(item.id)}
+			{#each paletteColors as item (item.id)}
 				<div
 					class="palette-color"
 					style="background-color: {backgroundColorText(item.color)};"
@@ -111,4 +136,11 @@
 			<IconButton class="material-icons" title="Dismiss">close</IconButton>
 		</Actions>
 	</Snackbar>
+	{#if dragging}
+		<div id="trash" use:dndzone={{items: trashItems}} on:consider={handleTrashConsider} on:finalize={handleTrashFinalize}>
+			{#each trashItems as item (item.id)}
+				<p>{item.id}</p>
+			{/each}
+		</div>
+	{/if}
 </div>
