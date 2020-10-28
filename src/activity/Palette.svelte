@@ -1,6 +1,7 @@
 <script>
 	import Paper, { Title } from '@smui/paper';
 	import IconButton from '@smui/icon-button';
+	import Trash from './Trash.svelte';
 	import {dndzone} from 'svelte-dnd-action';
 	import Snackbar, {Actions, Label} from '@smui/snackbar';
 	import copy from '../util/copy';
@@ -33,14 +34,7 @@
 		colors = e.detail.items.map(({color}) => color);
 	}
 
-	let trashItems = [];
 
-	function handleTrashConsider(e) {
-		trashItems = e.detail.items;
-	}
-	function handleTrashFinalize() {
-		trashItems = [];
-	}
 	async function copyColors() {
 		await copy(...paletteColors.map(({color}) => `#${padLeft(color.toString(16), 6)}`));
 		toast.open();
@@ -94,15 +88,6 @@
 	.palette-color:only-child {
 		border-radius: 10px;
 	}
-	#trash {
-		position: absolute;
-		top: 0px;
-		right: 0px;
-		height: 50%;
-		width: 50%;
-		background-color: grey;
-		border-bottom-left-radius: 100%;
-	}
 </style>
 <div class="container">
 	<Paper class="palette-card-paper">
@@ -137,10 +122,6 @@
 		</Actions>
 	</Snackbar>
 	{#if dragging}
-		<div id="trash" use:dndzone={{items: trashItems}} on:consider={handleTrashConsider} on:finalize={handleTrashFinalize}>
-			{#each trashItems as item (item.id)}
-				<p>{item.id}</p>
-			{/each}
-		</div>
+		<Trash/>
 	{/if}
 </div>
