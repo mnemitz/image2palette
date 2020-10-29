@@ -14,13 +14,13 @@
 	function handleTrashConsider(e) {
 		console.log(e);
 		if (navigator.vibrate) {
-			navigator.vibrate(500);
+			navigator.vibrate(50);
 		}
 		trashItems = e.detail.items;
 	}
 	function handleTrashFinalize() {
 		if (navigator.vibrate) {
-			navigator.vibrate(200);
+			navigator.vibrate(20);
 		}
 		trashItems = [];
 	}
