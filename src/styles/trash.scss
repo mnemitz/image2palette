@@ -1,0 +1,11 @@
+@media (orientation: portrait) {
+	#trash-indicator-text {
+        font-size: 3vh;
+	}
+}
+
+@media (orientation: landscape) {
+	#trash-indicator-text {
+        font-size: 3vw;
+	}
+}
