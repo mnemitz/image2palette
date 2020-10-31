@@ -2,16 +2,14 @@
 	import '../styles/trash.scss';
 	import {fly} from 'svelte/transition';
 	import {dndzone} from 'svelte-dnd-action';
-	import {deserialize8BitColor} from '../util/color';
+	import {deserialize8BitColor, isDark} from '../util/color';
 	let trashItems = [];
+	$: color = (trashItems[0] && trashItems[0].color)
+		? deserialize8BitColor(trashItems[0].color)
+		: {r: 128, g: 128, b: 128}
 
-	function backgroundColor({color} = {}) {
-		if (!color) {
-			return `background-color: grey;`;
-		}
-		const {r,g,b} = deserialize8BitColor(color);
-		return `background-color: rgb(${[r,g,b]});`;
-	}
+	$: backgroundColorStyle = `background-color: rgb(${[color.r, color.g, color.b]});`;
+	$: showLightIcon = isDark(color);
 
 	function handleTrashConsider(e) {
 		console.log(e);
@@ -46,6 +44,10 @@
 		width: 75%;
 		height: 75%;
 	}
+	.inverted {
+		filter: invert(100%);
+		-webkit-filter: invert(100%);
+	}
 	#trash-indicator-icon {
 		background: url('assets/mdi-delete.svg') no-repeat center center / contain;
 		height: 50px;
@@ -61,8 +63,8 @@
 		border-bottom-left-radius: 100%;
 	}
 </style>
-<div id="trash-container" transition:fly={{x: 200, duration: 100}}>
-	<div id="trash-indicator">
+<div id="trash-container" transition:fly={{x: 200, duration: 200}}>
+	<div id="trash-indicator" class={showLightIcon ? 'inverted' : ''}>
 		<div id="trash-indicator-icon"/>
 		<div id="trash-indicator-text" class="mdc-typography--subtitle1">{!trashItems.length ? 'Drag here to delete' : 'Got it!'}</div>
 	</div>
@@ -71,7 +73,7 @@
 		use:dndzone={{items: trashItems}}
 		on:consider={handleTrashConsider}
 		on:finalize={handleTrashFinalize}
-		style={backgroundColor(trashItems[0])}
+		style={backgroundColorStyle}
 	>
 		{#each trashItems as item (item.id)}
 			<div>{item.id}</div>

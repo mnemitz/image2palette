@@ -2,7 +2,7 @@
 	import { createEventDispatcher} from 'svelte';
 	import Card, { PrimaryAction } from '@smui/card';
 	import Checkbox from '@smui/checkbox';
-	import { deserialize8BitColor } from '../util/color';
+	import { deserialize8BitColor, isDark } from '../util/color';
 	import { padLeft } from '../util/util';
 
 	const dispatch = createEventDispatcher();
@@ -12,7 +12,6 @@
 	const colorText = `#${padLeft(color.toString(16), 6)}`;
 	// could probably acheive this without deserialization
 	const {r,g,b} = deserialize8BitColor(color);
-	const showLight = r <= 200 && g <= 200 && b <= 200;
 </script>
 <style>
 #container {
@@ -48,7 +47,7 @@
 		<PrimaryAction ripple on:click={() => dispatch('change', !selected)}>
 			<div id="content" class="mdc-typography--button">
 				<Checkbox bind:checked={selected}/>
-				<span class={`text ${showLight ? 'light' : 'dark'}`}>
+				<span class={`text ${isDark({r,g,b})? 'light' : 'dark'}`}>
 					{colorText}
 				</span>
 			</div>

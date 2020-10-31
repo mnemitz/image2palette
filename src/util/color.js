@@ -20,3 +20,7 @@ export function deserialize8BitColor(c) {
 	];
 	return { r, g, b };
 }
+
+export function isDark({r,g,b}) {
+	return r < 128 && g < 128 && b < 128;
+}

@@ -72,6 +72,8 @@
 	.palette-color {
 		flex-grow: 1;
 		max-width: 100px;
+		/* When the dark mode is activated on the palette, don't affect the color */
+		filter: inherit; 
 	}
 
 	.palette-color:active {
