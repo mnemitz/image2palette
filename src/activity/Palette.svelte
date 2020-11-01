@@ -1,6 +1,8 @@
 <script>
 	import Paper, { Title } from '@smui/paper';
 	import IconButton from '@smui/icon-button';
+	import Platform from '../Platform.svelte';
+	import PaletteColor from './PaletteColor.svelte';
 	import Trash from './Trash.svelte';
 	import {dndzone} from 'svelte-dnd-action';
 	import Snackbar, {Actions, Label} from '@smui/snackbar';
@@ -16,12 +18,14 @@
 	let paletteColors = [];
 	$: {
 		paletteColors = colors.map((color, index) => ({
-			id: index,
+			// id is just what we need to call it for the DnD, but really it's just index
+			// TODO: enable the library feature that lets us call this something custom
+			id: index, 
 			color,
 		}));
 	}
 
-	let dragging = true;
+	let dragging = false;
 
 	// Drag and drop stuff
 	const flipDurationMs = 300;
@@ -40,7 +44,6 @@
 		toast.open();
 	}
 
-	const backgroundColorText = (color) => `rgb(${[...Object.values(deserialize8BitColor(color))]})`;
 </script>
 <style>
 	* :global(.palette-card-paper) {
@@ -69,27 +72,6 @@
 		flex-grow: 1;
 		padding: 5px;
 	}
-	.palette-color {
-		flex-grow: 1;
-		max-width: 100px;
-		/* When the dark mode is activated on the palette, don't affect the color */
-		filter: inherit; 
-	}
-
-	.palette-color:active {
-		z-index: 1;
-	}
-
-	.palette-color:first-child {
-		border-radius: 10px 0px 0px 10px;
-	}
-
-	.palette-color:last-child {
-		border-radius: 0px 10px 10px 0px;
-	}
-	.palette-color:only-child {
-		border-radius: 10px;
-	}
 </style>
 <div class="container">
 	<Paper class="palette-card-paper">
@@ -108,11 +90,16 @@
 				</div>
 			</div>
 		</div>
-		<div class="palette-container" use:dndzone={{items: paletteColors, flipDurationMs}} on:consider={handleConsider} on:finalize={handleDndFinalize}>
+		<div
+			class="palette-container"
+			use:dndzone={{items: paletteColors, flipDurationMs, dropTargetStyle: {outline: 'none'}}}
+			on:consider={handleConsider}
+			on:finalize={handleDndFinalize}
+		>
 			{#each paletteColors as item (item.id)}
-				<div
-					class="palette-color"
-					style="background-color: {backgroundColorText(item.color)};"
+				<PaletteColor
+					color={deserialize8BitColor(item.color)}
+					on:remove={() => colors = colors.filter((_, index) => index !== item.id)}
 				/>
 			{/each}
 		</div>
@@ -123,7 +110,9 @@
 			<IconButton class="material-icons" title="Dismiss">close</IconButton>
 		</Actions>
 	</Snackbar>
-	{#if dragging}
-		<Trash/>
-	{/if}
+	<Platform let:hasTouch>
+		{#if hasTouch && dragging}
+			<Trash/>
+		{/if}
+	</Platform>
 </div>

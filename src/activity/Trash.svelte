@@ -44,10 +44,6 @@
 		width: 75%;
 		height: 75%;
 	}
-	.inverted {
-		filter: invert(100%);
-		-webkit-filter: invert(100%);
-	}
 	#trash-indicator-icon {
 		background: url('assets/mdi-delete.svg') no-repeat center center / contain;
 		height: 50px;
