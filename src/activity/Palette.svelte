@@ -15,15 +15,12 @@
 	let toast;
 
 	// From here downward we represent colors in order more verbosely
-	let paletteColors = [];
-	$: {
-		paletteColors = colors.map((color, index) => ({
+	$: paletteColors = colors.map((color, index) => ({
 			// id is just what we need to call it for the DnD, but really it's just index
 			// TODO: enable the library feature that lets us call this something custom
 			id: index, 
 			color,
 		}));
-	}
 
 	let dragging = false;
 

@@ -47,6 +47,7 @@
                 <IconButton
                     class={`material-icons ${isDark(color) ? ' inverted' : ''}`}
                     on:click={() => dispatch('remove')}
+                    style="font-size: 32px;"
                 >
                     cancel
                 </IconButton>
