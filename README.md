@@ -7,7 +7,7 @@ Pick your own color palettes from any image!
 ![Demo](/.github/images/demo.png)
 
 ## What it does
-Given any input image, this application generates colors which are characteristic to that image. These colors can then be used to generate color schemes which correspond hollistically to that image.
+Given any input image, this application generates colors which are characteristic to that image. You can then pick from these images to create your own beautiful color schemes.
 
 ## How it works
 Many images contain hundreds of thousand of distinct colors. If we want to extract colors from images to create beautiful, balanced color schemes, we have to be smart about selection.
