@@ -3,7 +3,7 @@
 # Color picker space
 
 Pick your own color palettes from any image!
-
+![Demo](/.github/images/demo.png)
 
 ## What it does
 Given any input image, this application generates colors which are characteristic to that image. These colors can then be used to generate color schemes which correspond hollistically to that image.
@@ -15,7 +15,7 @@ Ranking the distinct colors by frequency can produce nice results, but it misses
 
 With that goal in mind, the selection of colors in this app is based on the *convex hull* of the image colors. In other words, if each color in the image is plotted in 3D space (where red, green, and blue color channels are the respective axes), then the set of colors returned determines a polytope within which all of the other color points are contained. This polytope is visible within the page, and can be explored by hovering over the resulting colors, allowing the user to get a feel for the "shape" of the image, when seen from color space.
 
-Image   |   output
+Image   |   Convex colors
 :-------:|:----------:
 ![Starry Night](/dist/example_images/starry_night.jpg)  |   ![Polytope](/.github/images/polytope.png)
 
