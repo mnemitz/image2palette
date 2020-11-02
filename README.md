@@ -3,7 +3,7 @@
 # Color picker space
 
 Pick your own color palettes from any image!
-![Demo](/.github/images/demo.png){:height="3px" width="36px"}
+![Demo](/.github/images/demo.png)
 
 ## What it does
 Given any input image, this application generates colors which are characteristic to that image. These colors can then be used to generate color schemes which correspond hollistically to that image.
