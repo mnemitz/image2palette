@@ -3,6 +3,7 @@
 # Color picker space
 
 Pick your own color palettes from any image!
+
 ![Demo](/.github/images/demo.png)
 
 ## What it does
