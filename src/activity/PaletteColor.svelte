@@ -1,59 +1,57 @@
 <script>
-	import {deserialize8BitColor} from '../util/color';
-	import { spring } from 'svelte/motion';
-	import pannable from '../util/pannable';
-	export let color;
+    import {createEventDispatcher} from 'svelte';
+    import Platform from '../Platform.svelte';
+    import IconButton from '@smui/icon-button';
+    import {isDark} from '../util/color';
 
-	const backgroundColorText = (color) => `rgb(${[...Object.values(deserialize8BitColor(color))]})`;
+    export let color;
+    $: style = `background-color: rgb(${[color.r, color.g, color.b]});`;
 
-	const coords = spring({x: 0, y: 0}, {
-		stiffness: 0.2,
-		damping: 0.4,
-	});
-
-	function handlePanStart() {
-		coords.stiffness = coords.damping = 1;
-	}
-	function handlePanMove(event) {
-		coords.update($coords => ({
-			x: $coords.x + event.detail.dx,
-			y: $coords.y + event.detail.dy
-		}));
-	}
-	function handlePanEnd() {
-		coords.stiffness = 0.2;
-		coords.damping = 0.4;
-		coords.set({ x: 0, y: 0 });
-	}
+    const dispatch = createEventDispatcher();
 </script>
 <style>
-.palette-color {
-	flex-grow: 1;
-	cursor: move;
-	max-width: 100px;
-}
+	.palette-color {
+		flex-grow: 1;
+		max-width: 100px;
+		/* When the dark mode is activated on the palette, don't affect the color */
+		filter: inherit; 
+	}
+	.palette-color:active {
+		z-index: 1;
+	}
 
-.palette-color:active {
-	z-index: 1;
-}
+	.palette-color:first-child {
+		border-radius: 10px 0px 0px 10px;
+	}
 
-.palette-color:first-child {
-	border-radius: 10px 0px 0px 10px;
-}
-
-.palette-color:last-child {
-	border-radius: 0px 10px 10px 0px;
-}
-.palette-color:only-child {
-	border-radius: 10px;
-}
+	.palette-color:last-child {
+		border-radius: 0px 10px 10px 0px;
+	}
+	.palette-color:only-child {
+		border-radius: 10px;
+    }
+    .palette-color > .palette-color-contents {
+        display: none;
+    }
+    .palette-color:hover > .palette-color-contents {
+        display: flex;
+    }
 </style>
 <div
-	use:pannable
-	:panstart={handlePanStart}
-	on:panmove={handlePanMove}
-	on:panend={handlePanEnd}
-	class="palette-color"
-	style="background-color: {backgroundColorText(color)}; transform: translate({$coords.x}px,{$coords.y}px);"
+    class="palette-color"
+    style={style}
 >
+    <div class="palette-color-contents">
+        <Platform let:hasTouch>
+            {#if !hasTouch}
+                <IconButton
+                    class={`material-icons ${isDark(color) ? ' inverted' : ''}`}
+                    on:click={() => dispatch('remove')}
+                    style="font-size: 32px;"
+                >
+                    cancel
+                </IconButton>
+            {/if}
+        </Platform>
+    </div>
 </div>
