@@ -1,11 +1,13 @@
 @media (orientation: portrait) {
 	#trash-indicator-text {
-        font-size: 3vh;
+		font-size: 3vh;
+		font-size: calc(var(--vh, 1vh) * 3);
 	}
 }
 
 @media (orientation: landscape) {
 	#trash-indicator-text {
         font-size: 3vw;
+		font-size: calc(var(--vw, 1vw) * 3);
 	}
 }

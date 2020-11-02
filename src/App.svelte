@@ -11,6 +11,17 @@
 	let secondaryColor = false;
 	let modalDrawerOpen = false;
 	let inputImagePath;
+
+	function setViewportUnits() {
+		// We execute the same script as before
+		const vh = window.innerHeight * 0.01;
+		const vw = window.innerWidth * 0.01;
+		document.documentElement.style.setProperty('--vh', `${vh}px`);
+		document.documentElement.style.setProperty('--vw', `${vw}px`);
+	}
+	// We listen to the resize event
+	window.addEventListener('resize', setViewportUnits);
+	setViewportUnits();
 </script>
 <style>
 	#main {
