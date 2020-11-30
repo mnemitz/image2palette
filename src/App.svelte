@@ -95,11 +95,11 @@
 		</MediaQuery>
 		<Scrim/>
 		<AppContent>
-			<main class="main-content">
+			<div class="main-content">
 				<Activity
 					inputImagePath={inputImagePath}
 				/>
-			</main>
+			</div>
 		</AppContent>
 	</div>
 </div>
