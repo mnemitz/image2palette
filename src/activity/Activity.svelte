@@ -115,62 +115,23 @@
 	#image-card-container {
 		height: 100%;
 	}
+	.red {
+		background-color: red;
+		width: 150px;
+		height: 100px;
+	}
+	.blue {
+		background-color: blue;
+		height: 100%;
+	}
 </style>
 <div class="activity">
 	<div>
 		<div class="container">
-			{#if !inputImagePath}
-				<PlaceholderImageCard/>
-			{:else}
-				<div id="image-card-container">
-					<ImageCard src={inputImagePath}>
-						<strong>Distinct&nbsp;colors: </strong>
-						{#await distinctColorsP}
-							...
-						{:then distinctColors}
-							{#if distinctColors}
-								<span>
-									{distinctColors.length}
-								</span>
-							{/if}
-						{/await}
-						<strong>Convex&nbsp;colors: </strong>
-						{#await graphP}
-							...
-						{:then graph}
-							{#if graph}
-								<span>
-									{graph.vertexCount()}
-								</span>
-							{/if}
-						{/await}
-					</ImageCard>
-				</div>
-			{/if}
+			<div class="red"/>
 		</div>
 		<div class="container flexgrow">
-			<ThreeScene>
-				{#if showAxes}
-					<AxesHelper magnitude={512}/>
-				{/if}
-				{#await convexGeometryP}
-					<div class="spinner-container">
-						<Spinner
-							thickness={3}
-							color="white"
-							size={150}
-						/>
-					</div>
-				{:then geometry}
-					<ColoredWireFrame
-						geometry={geometry}
-					/>
-				{/await}
-				<ColorPoint
-					id="hovered"
-					color={hoveredColor}
-				/>
-			</ThreeScene>
+			<div class="blue"/>
 		</div>
 	</div>
 	<div>
@@ -183,7 +144,7 @@
 				on:hovered={({detail: color}) => hoveredColor = color}
 			/>
 		{/await}
-		<Palette bind:colors={selectedColors}/>
+		<div class="blue"/>
 	</div>
 </div>
 
