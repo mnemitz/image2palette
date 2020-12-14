@@ -2,8 +2,8 @@
 	import { createEventDispatcher} from 'svelte';
 	import Card, { PrimaryAction } from '@smui/card';
 	import Checkbox from '@smui/checkbox';
-	import { deserialize8BitColor, isDark } from '../util/color';
-	import { padLeft } from '../util/util';
+	import { deserialize8BitColor, isDark } from '../lib/color';
+	import { padLeft } from '../lib/util';
 
 	const dispatch = createEventDispatcher();
 	export let color;

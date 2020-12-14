@@ -1,4 +1,4 @@
-import { UnionFind } from '../../src/util/unionfind';
+import { UnionFind } from '../../src/lib/unionfind';
 import { expect } from 'chai';
 
 describe('unionfind', () => {

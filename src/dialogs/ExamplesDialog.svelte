@@ -1,4 +1,8 @@
-<Dialog bind:this={dialog} class="dialog">
+<Dialog
+	bind:this={dialog}
+	class="dialog"
+	on:MDCDialog:closed
+>
 	<Title>
 		Examples
 	</Title>
@@ -18,15 +22,13 @@
 	</Content>
 </Dialog>
 <script>
-	import {createEventDispatcher} from 'svelte';
 	import Dialog, {Title, Content} from '@smui/dialog';
 	import ImageList, {Item, ImageAspectContainer, Image, Supporting, Label} from '@smui/image-list';
 	import Div from '@smui/common/Div.svelte';
 	import '../styles/imagelist.scss';
+	import ConfigStore from '../store/ConfigStore';
 
 	let dialog;
-
-	const dispatch = createEventDispatcher();
 
 	const images = [
 		{
@@ -64,7 +66,10 @@
 	}
 
 	function selectImage(filename) {
-		dispatch('selectedImage', filename);
+		ConfigStore.update((store) => ({
+			...store,
+			inputImagePath: filename,
+		}))
 		dialog.close();
 	}
 </script>

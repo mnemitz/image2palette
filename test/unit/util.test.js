@@ -1,5 +1,5 @@
 import { expect, assert } from 'chai';
-import { makeCubePoints, padLeft, mapDeepEqual, cloneNestedMap } from '../../src/util/util';
+import { makeCubePoints, padLeft, mapDeepEqual, cloneNestedMap } from '../../src/lib/util';
 
 // TODO: figure out how to lint the tests
 describe('Utility function tests', () => {
