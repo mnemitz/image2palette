@@ -1,8 +1,9 @@
 <script>
-    import Dialog, {Title, Content} from '@smui/dialog';
+  import Dialog, {Title, Content, Actions} from '@smui/dialog';
+  import Button from '@smui/button';
 
-    let dialog;
-    // TODO how can we forward this implicitly?
+  let dialog;
+  // TODO how can we forward this implicitly?
 	export function open() {
 		dialog.open();
 	}
@@ -17,9 +18,6 @@
   </p>
   <h1 id="color-picker-space">Color picker space</h1>
   <p>Pick your own color palettes from any image!</p>
-  <p>
-    <img src="/.github/images/demo.png" alt="Demo" />
-  </p>
   <h2 id="what-it-does">What it does</h2>
   <p>
     Given any input image, this application generates colors which are
@@ -86,18 +84,7 @@
     <code>src/three-components/ThreeScene.svelte</code>
     ).
   </p>
-  <h2 id="todo-s-and-nice-to-have-s">TODO&#39;s and nice-to-have&#39;s</h2>
-  <ul>
-    <li>[ ] Projection to HSV/HSL space instead of just RGB.</li>
-    <li>
-      [ ] More exploratory interface for interacting within the color space
-      projection
-    </li>
-    <li>[ ] Typescript everywhere!</li>
-    <li>
-      [ ] More graph related algorithms for color selection (traversals, MST
-      etc.)
-    </li>
-    <li>[ ] Fix styling on iOS</li>
-  </ul>
+  <Actions>
+    <Button on:click={dialog.close}>Close</Button>
+  </Actions>
 </Dialog>

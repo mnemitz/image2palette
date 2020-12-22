@@ -8,6 +8,8 @@
 	import copy from '../lib/copy';
 	import {padLeft} from '../lib/util';
 	import {deserialize8BitColor} from '../lib/color';
+	import {toast} from '../store/KitchenStore';
+	import {showUserError} from '../store/DialogStore';
 
 	export let colors = [];
 
@@ -34,8 +36,14 @@
 
 
 	async function copyColors() {
-		await copy(...paletteColors.map(({color}) => `#${padLeft(color.toString(16), 6)}`));
-		toast.open();
+		try {
+			await copy(...paletteColors.map(({color}) => `#${padLeft(color.toString(16), 6)}`));
+			toast('Copied colors to clipboard!');
+		} catch (e) {
+			const errorMessage = 'Error copying colors';
+			console.error(errorMessage, e);
+			showUserError({errorMessage, errorFull: e});
+		}
 	}
 
 </script>

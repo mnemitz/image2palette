@@ -7,24 +7,33 @@
 	import Activity from './activity/Activity.svelte';
 	import ConfigStore from './store/ConfigStore';
 	import DialogStore, {Dialogs, closeDialog} from './store/DialogStore';
+	import KitchenStore from './store/KitchenStore';
 	import ExamplesDialog from './dialogs/ExamplesDialog.svelte';
 	import AboutDialog from './dialogs/AboutDialog.svelte';
+	import ErrorDialog from './dialogs/ErrorDialog.svelte';
+	import Kitchen from '@smui/snackbar/kitchen/index';
 
 	let modalDrawerOpen = false;
 	let activeDialogComponent;
 	let activeDialog;
+	let dialogProps = {};
+	let kitchen;
 
 	DialogStore.subscribe((store) => {
 		if (!store.activeDialog) {
 			activeDialogComponent = null;
 			return;
 		}
+		dialogProps = store.props;
 		switch (store.activeDialog) {
 			case Dialogs.ExampleImages:
 				activeDialogComponent = ExamplesDialog;
 				break;
 			case Dialogs.About:
 				activeDialogComponent = AboutDialog;
+				break;
+			case Dialogs.Error:
+				activeDialogComponent = ErrorDialog;
 				break;
 			default:
 				console.warn(`Unknown dialog key ${store.activeDialog}`);
@@ -36,6 +45,15 @@
 		if (store.inputImagePath) {
 			modalDrawerOpen = false;
 		}
+	});
+
+	KitchenStore.subscribe((message) => {
+		kitchen && message && kitchen.push({
+			label: message,
+			dismissButton: true,
+			// Clear message on close
+			onClose: () => KitchenStore.update(() => {}),
+		});
 	});
 
 	$: {
@@ -75,7 +93,6 @@
 		position: relative;
 		flex-grow: 1;
 	}
-
 </style>
 <div id="main" class="site-default-theme">
 	<TopAppBar variant="static" prominent={false} dense={false}>
@@ -126,7 +143,9 @@
 				this={activeDialogComponent}
 				bind:this={activeDialog}
 				on:MDCDialog:closed={closeDialog}
+				{...dialogProps}
 			/>
 		{/if}
 	</div>
+	<Kitchen bind:this={kitchen} dismiss$class="material-icons"/>
 </div>

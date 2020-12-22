@@ -20,9 +20,13 @@
 			{/each}
 		</ImageList>
 	</Content>
+    <Actions>
+        <Button on:click={dialog.close}>Close</Button>
+    </Actions>
 </Dialog>
 <script>
-	import Dialog, {Title, Content} from '@smui/dialog';
+	import Dialog, {Title, Content, Actions} from '@smui/dialog';
+	import Button from '@smui/button';
 	import ImageList, {Item, ImageAspectContainer, Image, Supporting, Label} from '@smui/image-list';
 	import Div from '@smui/common/Div.svelte';
 	import '../styles/imagelist.scss';
