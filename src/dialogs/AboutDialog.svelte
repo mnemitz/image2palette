@@ -1,5 +1,5 @@
 <script>
-  import Dialog, {Title, Content, Actions} from '@smui/dialog';
+  import Dialog, {Actions} from '@smui/dialog';
   import Button from '@smui/button';
 
   let dialog;

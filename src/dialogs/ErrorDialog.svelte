@@ -16,7 +16,7 @@
         padding: 10px;
     }
 </style>
-<Dialog class="error-message" bind:this={dialog} on:MDCDialog:closed>
+<Dialog class="error-dialog" bind:this={dialog} on:MDCDialog:closed>
     <Title>{errorMessage}</Title>
     <Content>
         <code>{errorFull}</code>

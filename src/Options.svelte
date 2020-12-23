@@ -2,13 +2,8 @@
 	import { Content } from '@smui/drawer';
 	import List, { Item, Text } from '@smui/list';
 	import IconButton from '@smui/icon-button';
-	import ConfigStore from './store/ConfigStore';
 	import {Dialogs, openDialog} from './store/DialogStore';
 	import {getInputFile} from './lib/inputImage';
-
-	function handleImageInput() {
-		getInputFile();
-	}
 </script>
 <Content>
 	<List>
