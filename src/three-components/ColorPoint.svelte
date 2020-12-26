@@ -1,7 +1,7 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
 	import { Color, Geometry, Points, PointsMaterial, Vector3 } from 'three';
-	import { deserialize8BitColor } from '../util/color';
+	import { deserialize8BitColor } from '../lib/color';
 
 	const { getThreeContext } = getContext('getThreeContext');
 	const threeContext = getThreeContext();

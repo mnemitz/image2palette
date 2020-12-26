@@ -2,7 +2,7 @@
 	import '../styles/trash.scss';
 	import {fly} from 'svelte/transition';
 	import {dndzone} from 'svelte-dnd-action';
-	import {deserialize8BitColor, isDark} from '../util/color';
+	import {deserialize8BitColor, isDark} from '../lib/color';
 	let trashItems = [];
 	$: color = (trashItems[0] && trashItems[0].color)
 		? deserialize8BitColor(trashItems[0].color)

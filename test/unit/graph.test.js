@@ -1,7 +1,7 @@
 import { Vector3, BoxGeometry } from 'three';
-import { Graph } from '../../src/util/graph';
-import { mapDeepEqual } from '../../src/util/util';
-import { geometryGraphNodes } from '../../src/util/geometry';
+import { Graph } from '../../src/lib/graph';
+import { mapDeepEqual } from '../../src/lib/util';
+import { geometryGraphNodes } from '../../src/lib/geometry';
 
 import { expect, assert } from 'chai';
 

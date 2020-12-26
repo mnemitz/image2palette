@@ -14,9 +14,9 @@
 	import { Vector3 } from 'three';
 	import { ConvexGeometry } from 'three-examples';
 
-	import { Graph } from '../util/graph';
-	import { geometryGraphNodes } from '../util/geometry';
-	import { serialize8BitColor, deserialize8BitColor } from '../util/color';
+	import { Graph } from '../lib/graph';
+	import { geometryGraphNodes } from '../lib/geometry';
+	import { serialize8BitColor, deserialize8BitColor } from '../lib/color';
 
 	import '../styles/activity.scss';
 	import PlaceholderImageCard from './PlaceholderImageCard.svelte';

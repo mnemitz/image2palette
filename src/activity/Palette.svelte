@@ -5,14 +5,13 @@
 	import PaletteColor from './PaletteColor.svelte';
 	import Trash from './Trash.svelte';
 	import {dndzone} from 'svelte-dnd-action';
-	import Snackbar, {Actions, Label} from '@smui/snackbar';
-	import copy from '../util/copy';
-	import {padLeft} from '../util/util';
-	import {deserialize8BitColor} from '../util/color';
+	import copy from '../lib/copy';
+	import {padLeft} from '../lib/util';
+	import {deserialize8BitColor} from '../lib/color';
+	import {toast} from '../store/KitchenStore';
+	import {showUserError} from '../store/DialogStore';
 
 	export let colors = [];
-
-	let toast;
 
 	// From here downward we represent colors in order more verbosely
 	$: paletteColors = colors.map((color, index) => ({
@@ -37,8 +36,14 @@
 
 
 	async function copyColors() {
-		await copy(...paletteColors.map(({color}) => `#${padLeft(color.toString(16), 6)}`));
-		toast.open();
+		try {
+			await copy(...paletteColors.map(({color}) => `#${padLeft(color.toString(16), 6)}`));
+			toast('Copied colors to clipboard!');
+		} catch (e) {
+			const errorMessage = 'Error copying colors';
+			console.error(errorMessage, e);
+			showUserError({errorMessage, errorFull: e});
+		}
 	}
 
 </script>
@@ -101,12 +106,6 @@
 			{/each}
 		</div>
 	</Paper>
-	<Snackbar bind:this={toast}>
-		<Label>Copied colors to clipboard!</Label>
-		<Actions>
-			<IconButton class="material-icons" title="Dismiss">close</IconButton>
-		</Actions>
-	</Snackbar>
 	<Platform let:hasTouch>
 		{#if hasTouch && dragging}
 			<Trash/>

@@ -2,7 +2,7 @@
     import {createEventDispatcher} from 'svelte';
     import Platform from '../Platform.svelte';
     import IconButton from '@smui/icon-button';
-    import {isDark} from '../util/color';
+    import {isDark} from '../lib/color';
 
     export let color;
     $: style = `background-color: rgb(${[color.r, color.g, color.b]});`;

@@ -2,33 +2,8 @@
 	import { Content } from '@smui/drawer';
 	import List, { Item, Text } from '@smui/list';
 	import IconButton from '@smui/icon-button';
-	import ExamplesDialog from './dialogs/ExamplesDialog.svelte';
-	import ConfigStore from './store/ConfigStore.js';
-
-	let examplesDialog;
-</script>
-<script context="module">
-	export function getInputFile() {
-		const input = document.createElement('input');
-		async function onchange() {
-			const inputImagePath = await getImage(this.files[0])
-			ConfigStore.update((store) => ({...store, inputImagePath}));
-		}
-
-		input.setAttribute('type', 'file');
-		input.setAttribute('accept', 'image/*');
-		input.onchange = onchange.bind(input);
-		input.click();
-	}
-
-	function getImage(file) {
-		return new Promise((resolve, reject) => {
-			const fr = new FileReader();
-			fr.onload = (e) => resolve(e.target.result);
-			fr.readAsDataURL(file);
-			setTimeout(reject, 10000);
-		});
-	}
+	import {Dialogs, openDialog} from './store/DialogStore';
+	import {getInputFile} from './lib/inputImage';
 </script>
 <Content>
 	<List>
@@ -38,21 +13,17 @@
 			</IconButton>
 			<Text>Analyze image</Text>
 		</Item>
-		<Item on:click={examplesDialog.open}>
+		<Item on:click={() => openDialog(Dialogs.ExampleImages)}>
 			<IconButton class="material-icons">
 				view_module
 			</IconButton>
 			<Text>View examples</Text>
 		</Item>
-		<Item>
+		<Item on:click={() => openDialog(Dialogs.About)}>
 			<IconButton class="material-icons">
 				help 
 			</IconButton>
 			<Text>About</Text>
 		</Item>
 	</List>
-		<ExamplesDialog
-			bind:this={examplesDialog}
-			on:selectedImage={({detail: inputImagePath}) => ConfigStore.update((store) => ({...store, inputImagePath}))}
-		/>
 </Content>
