@@ -1,5 +1,5 @@
 <script>
-  import Dialog, {Actions} from '@smui/dialog';
+  import Dialog, {Title, Actions} from '@smui/dialog';
   import Button from '@smui/button';
 
   let dialog;
@@ -9,14 +9,7 @@
 	}
 </script>
 <Dialog bind:this={dialog} on:MDCDialog:closed>
-  <p>
-    <a href="https://app.netlify.com/sites/colorpicker-space/deploys">
-      <img
-        src="https://api.netlify.com/api/v1/badges/62d4d8a3-f08c-44e2-9dd2-c52bce696517/deploy-status"
-        alt="Netlify Status" />
-    </a>
-  </p>
-  <h1 id="color-picker-space">Color picker space</h1>
+  <Title>Image to Palette</Title>
   <p>Pick your own color palettes from any image!</p>
   <h2 id="what-it-does">What it does</h2>
   <p>

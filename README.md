@@ -1,6 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/62d4d8a3-f08c-44e2-9dd2-c52bce696517/deploy-status)](https://app.netlify.com/sites/colorpicker-space/deploys)
-
-# Color picker space
+# Image to palette
 
 Pick your own color palettes from any image!
 
@@ -33,5 +31,5 @@ Svelte's context API mixes quite nicely with ThreeJS too. With some pretty simpl
 * [ ] More exploratory interface for interacting within the color space projection
 * [ ] Typescript everywhere!
 * [ ] More graph related algorithms for color selection (traversals, MST etc.)
-* [ ] Fix styling on iOS
+* [X] Fix styling on iOS
 

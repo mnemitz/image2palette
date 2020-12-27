@@ -110,7 +110,7 @@
 					{/if}
 				</MediaQuery>
 				<img id="topbar-icon" src="colorpickerspace.svg" alt=":("/>
-				<Title>Pick some colors!</Title>
+				<Title>Image to palette</Title>
 			</Section>
 			<!-- TODO: Icons on the right: source code link etc -->
 			<!-- <Section align="end" toolbar>
