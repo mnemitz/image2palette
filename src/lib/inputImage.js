@@ -1,14 +1,15 @@
 import ConfigStore from '../store/ConfigStore';
 import {showUserError} from '../store/DialogStore';
 
+// onchange listener, to be bound to input element
+async function onchange() {
+    const inputImagePath = await getImage(this.files[0])
+    ConfigStore.update((store) => ({...store, inputImagePath}));
+}
+
 export function getInputFile() {
     try {
         const input = document.createElement('input');
-        async function onchange() {
-            const inputImagePath = await getImage(this.files[0])
-            ConfigStore.update((store) => ({...store, inputImagePath}));
-        }
-
         input.setAttribute('type', 'file');
         input.setAttribute('accept', 'image/*');
         input.onchange = onchange.bind(input);
