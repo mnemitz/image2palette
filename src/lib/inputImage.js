@@ -1,16 +1,21 @@
 import ConfigStore from '../store/ConfigStore';
+import {showUserError} from '../store/DialogStore';
 
 export function getInputFile() {
-    const input = document.createElement('input');
-    async function onchange() {
-        const inputImagePath = await getImage(this.files[0])
-        ConfigStore.update((store) => ({...store, inputImagePath}));
-    }
+    try {
+        const input = document.createElement('input');
+        async function onchange() {
+            const inputImagePath = await getImage(this.files[0])
+            ConfigStore.update((store) => ({...store, inputImagePath}));
+        }
 
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.onchange = onchange.bind(input);
-    input.click();
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.onchange = onchange.bind(input);
+        input.click();
+    } catch (errorFull) {
+        showUserError({errorMessage, errorFull})
+    }
 }
 
 function getImage(file) {

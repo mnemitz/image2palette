@@ -21,6 +21,7 @@ export function closeDialog() {
 }
 
 export function showUserError({errorMessage, errorFull}) {
+    console.error(errorMessage, errorFull);
     DialogStore.update(() => ({
         activeDialog: Dialogs.Error,
         props: {errorMessage, errorFull},

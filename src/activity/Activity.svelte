@@ -21,7 +21,8 @@
 	import '../styles/activity.scss';
 	import PlaceholderImageCard from './PlaceholderImageCard.svelte';
 
-	import ConfigStore from '../store/ConfigStore.js';
+	import ConfigStore from '../store/ConfigStore';
+	import {showUserError} from '../store/DialogStore';
 
 	let inputImagePath, showAxes;
 
@@ -49,9 +50,7 @@
 
 		img && img.decode()
 			.then(() => onImageLoad(img))
-			.catch((err) => {
-				console.error('error decoding image', err);
-			})
+			.catch(showUserError)
 	}
 
 	function onImageLoad(img) {

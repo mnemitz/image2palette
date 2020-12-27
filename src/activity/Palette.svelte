@@ -39,10 +39,9 @@
 		try {
 			await copy(...paletteColors.map(({color}) => `#${padLeft(color.toString(16), 6)}`));
 			toast('Copied colors to clipboard!');
-		} catch (e) {
+		} catch (errorFull) {
 			const errorMessage = 'Error copying colors';
-			console.error(errorMessage, e);
-			showUserError({errorMessage, errorFull: e});
+			showUserError({errorMessage, errorFull});
 		}
 	}
 
