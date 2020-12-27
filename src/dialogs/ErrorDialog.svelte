@@ -17,8 +17,12 @@
     }
 </style>
 <Dialog class="error-dialog" bind:this={dialog} on:MDCDialog:closed>
-    <Title>{errorMessage}</Title>
+    <Title>Something went wrong! 🙁</Title>
     <Content>
+        <p>{errorMessage}</p>
+        {#if location}
+            <strong>Location:</strong><p>{location}</p>
+        {/if}
         <code>{errorFull}</code>
     </Content>
     <Actions>

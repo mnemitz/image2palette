@@ -6,7 +6,7 @@
 	import Options from './Options.svelte';
 	import Activity from './activity/Activity.svelte';
 	import ConfigStore from './store/ConfigStore';
-	import DialogStore, {Dialogs, closeDialog} from './store/DialogStore';
+	import DialogStore, {Dialogs, closeDialog, showUserError} from './store/DialogStore';
 	import KitchenStore from './store/KitchenStore';
 	import ExamplesDialog from './dialogs/ExamplesDialog.svelte';
 	import AboutDialog from './dialogs/AboutDialog.svelte';
@@ -55,6 +55,14 @@
 			onClose: () => KitchenStore.update(() => {}),
 		});
 	});
+
+	window.onerror = (msg, url, line, col, error) => {
+		showUserError({
+			errorMessage: msg,
+			location: `${url}:${line}:${col}`,
+			errorFull: error,
+		});
+	}
 
 	$: {
 		if (activeDialog) {

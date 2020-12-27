@@ -1,5 +1,4 @@
 import ConfigStore from '../store/ConfigStore';
-import {showUserError} from '../store/DialogStore';
 
 // onchange listener, to be bound to input element
 async function onchange() {
@@ -8,25 +7,22 @@ async function onchange() {
 }
 
 export function getInputFile() {
-    try {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.onchange = onchange.bind(input);
-        input.click();
-    } catch (errorFull) {
-        showUserError({
-            errorMessage: 'Error getting input image',
-            errorFull,
-        })
-    }
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.onchange = onchange.bind(input);
+    input.click();
 }
 
 function getImage(file) {
     return new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = (e) => resolve(e.target.result);
-        fr.readAsDataURL(file);
-        setTimeout(reject, 10000);
+        try {
+            const fr = new FileReader();
+            fr.onload = (e) => resolve(e.target.result);
+            fr.readAsDataURL(file);
+            setTimeout(reject, 10000);
+        } catch (e) {
+            reject(e)
+        }
     });
 }

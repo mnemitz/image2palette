@@ -55,12 +55,25 @@
 				errorFull,
 			}))
 	}
-
-	function onImageLoad(img) {
+	async function onImageLoad(img) {
 		selectedColors = [];
-		distinctColorsP = drawInputImageToCanvas(img).then(getDistinctColors);
+		distinctColorsP = drawInputImageToCanvas(img)
+			.then(getDistinctColors)
+			.catch((errorFull) => {
+				showUserError({
+					errorMessage: 'Error loading image',
+					errorFull,
+				})
+			});
 		convexGeometryP = distinctColorsP.then(getConvexGeometry);
-		graphP = convexGeometryP.then((geometry) => new Graph(geometryGraphNodes(geometry)))
+		graphP = convexGeometryP
+			.then((geometry) => new Graph(geometryGraphNodes(geometry)))
+			.catch((errorFull) => {
+				showUserError({
+					errorMessage: 'Error creating geometry',
+					errorFull,
+				})
+			});
 	}
 
 	function drawInputImageToCanvas(img) {
