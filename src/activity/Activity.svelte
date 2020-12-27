@@ -21,7 +21,8 @@
 	import '../styles/activity.scss';
 	import PlaceholderImageCard from './PlaceholderImageCard.svelte';
 
-	import ConfigStore from '../store/ConfigStore.js';
+	import ConfigStore from '../store/ConfigStore';
+	import {showUserError} from '../store/DialogStore';
 
 	let inputImagePath, showAxes;
 
@@ -49,16 +50,30 @@
 
 		img && img.decode()
 			.then(() => onImageLoad(img))
-			.catch((err) => {
-				console.error('error decoding image', err);
-			})
+			.catch((errorFull) => showUserError({
+				errorMessage: 'Error decoding image',
+				errorFull,
+			}))
 	}
-
-	function onImageLoad(img) {
+	async function onImageLoad(img) {
 		selectedColors = [];
-		distinctColorsP = drawInputImageToCanvas(img).then(getDistinctColors);
+		distinctColorsP = drawInputImageToCanvas(img)
+			.then(getDistinctColors)
+			.catch((errorFull) => {
+				showUserError({
+					errorMessage: 'Error loading image',
+					errorFull,
+				})
+			});
 		convexGeometryP = distinctColorsP.then(getConvexGeometry);
-		graphP = convexGeometryP.then((geometry) => new Graph(geometryGraphNodes(geometry)))
+		graphP = convexGeometryP
+			.then((geometry) => new Graph(geometryGraphNodes(geometry)))
+			.catch((errorFull) => {
+				showUserError({
+					errorMessage: 'Error creating geometry',
+					errorFull,
+				})
+			});
 	}
 
 	function drawInputImageToCanvas(img) {
