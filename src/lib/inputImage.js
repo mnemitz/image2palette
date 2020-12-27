@@ -15,7 +15,10 @@ export function getInputFile() {
         input.onchange = onchange.bind(input);
         input.click();
     } catch (errorFull) {
-        showUserError({errorMessage, errorFull})
+        showUserError({
+            errorMessage: 'Error getting input image',
+            errorFull,
+        })
     }
 }
 
