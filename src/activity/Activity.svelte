@@ -50,7 +50,10 @@
 
 		img && img.decode()
 			.then(() => onImageLoad(img))
-			.catch(showUserError)
+			.catch((errorFull) => showUserError({
+				errorMessage: 'Error decoding image',
+				errorFull,
+			}))
 	}
 
 	function onImageLoad(img) {
