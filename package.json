@@ -54,6 +54,6 @@
 		"svelte": "^3.24.0",
 		"svelte-dnd-action": "^0.2.12",
 		"svelte-spinner": "^2.0.2",
-		"three": "^0.117.1"
+		"three": "^0.125.0"
 	}
 }
